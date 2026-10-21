@@ -1,29 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHOP.CO</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <title>SHOP .CO</title>
+    <link rel="stylesheet" href="detail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
+        integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
-    <div class="promo-banner">
+    <div class="promo-banner ">
         <p>Sign up and get 20% off to your first order.
             <a href="#">Sign Up Now</a>
         </p>
         <i class="fa-solid fa-xmark"></i>
     </div>
-    <header class="header">
+    <header class="header container">
         <div class="burger-icon">
             <i class="fa-solid fa-bars"></i>
         </div>
         <div class="logo">SHOP.CO</div>
-        <ul>
-            <li>Shop</li>
+        <ul id="ul">
+            <li class="has-drop">
+                <a>Shop</a>
+                <button type="button" class="arrow-btn">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </li>
             <li>On Sale</li>
             <li>New Arrivals</li>
             <li>Brands</li>
+        </ul>
+        <ul class="drop-box">
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./detail.html">Details</a></li>
+            <li><a href="./category.html">Casual</a></li>
+            <li><a href="./cart.html">Cart</a></li>
         </ul>
         <div class="header-tools">
             <div class="search-box">
@@ -37,3 +50,301 @@
             </div>
         </div>
     </header>
+    <div class="main-content container">
+        <div class="product-images">
+            <div class="small-images">
+                <img src="./images/image 2.png" alt="img">
+                <img src="./images/image 5.png" alt="img">
+                <img src="./images/image 6.png" alt="img">
+            </div>
+            <div class="big-image">
+                <img class="main-img" src="./images/image 1.png" alt="main-img">
+            </div>
+        </div>
+        <div class="product-info">
+            <h1 class="title">One Life Graphic T-Shirt</h1>
+            <div class="rating-box">
+                <div class="stars">★★★★★</div>
+                <span class="rating-num">4.5/5</span>
+            </div>
+            <div class="price-box">
+                <span class="price-now">$260</span>
+                <span class="price-old">$300</span>
+                <span class="sale-badge">-40%</span>
+            </div>
+            <p class="description">
+                This graphic t-shirt which is perfect for any occasion. Crafted from a soft and breathable fabric, it
+                offers
+                superior comfort and style.
+            </p>
+            <div class="section-title">Select Colors</div>
+            <div class="colors-wrap">
+                <button class="color-btn color-1">✓</button>
+                <button class="color-btn color-2"></button>
+                <button class="color-btn color-3"></button>
+            </div>
+            <div class="section-title">Choose Size</div>
+            <div class="sizes-wrap">
+                <button class="size-btn">Small</button>
+                <button class="size-btn">Medium</button>
+                <button class="size-btn active">Large</button>
+                <button class="size-btn">X-Large</button>
+            </div>
+            <div class="buttons-wrap">
+                <div class="count-box">
+                    <button class="minus-btn">−</button>
+                    <span class="count-num">1</span>
+                    <button class="plus-btn">+</button>
+                </div>
+                <button class="cart-btn">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+    <div class="reviews container">
+        <div class="reviews-card">
+            <div class="rating">
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+            </div>
+            <div class="user-name">
+                <p>Samantha D.</p>
+                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
+            </div>
+            <p class="review-text">"I absolutely love this t-shirt! The design is unique and the fabric feels so
+                comfortable. As a fellow designer, I appreciate the attention to detail. It's become my favorite go-to
+                shirt."</p>
+            <p class="review-date">Posted on August 14, 2023</p>
+        </div>
+        <div class="reviews-card">
+            <div class="rating">
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+            </div>
+            <div class="user-name">
+                <p>Alex M.</p>
+                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
+            </div>
+            <p class="review-text">"The t-shirt exceeded my expectations! The colors are vibrant and the print quality
+                is top-notch. Being a UI/UX designer myself, I'm quite picky about aesthetics, and this t-shirt
+                definitely gets a thumbs up from me."</p>
+            <p class="review-date">Posted on August 15, 2023</p>
+        </div>
+        <div class="reviews-card">
+            <div class="rating">
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+            </div>
+            <div class="user-name">
+                <p>Ethan R.</p>
+                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
+            </div>
+            <p class="review-text">"This shirt is a total game-changer for my wardrobe. The fit is perfect around the
+                shoulders and it doesn't shrink after washing. Will definitely be ordering in more colors soon!"</p>
+            <p class="review-date">Posted on August 16, 2023</p>
+        </div>
+        <div class="reviews-card">
+            <div class="rating">
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+            </div>
+            <div class="user-name">
+                <p>Olivia P.</p>
+                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
+            </div>
+            <p class="review-text">"Finding clothes that align with my personal style used to be a challenge until I
+                discovered Shop.co. The minimalist vibe of this graphic tee is exactly what I was looking for. Highly
+                recommend!"</p>
+            <p class="review-date">Posted on August 17, 2023</p>
+        </div>
+        <div class="reviews-card">
+            <div class="rating">
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+            </div>
+            <div class="user-name">
+                <p>Liam K.</p>
+                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
+            </div>
+            <p class="review-text">"Super fast shipping and amazing customer support! The fabric is incredibly soft and
+                feels premium. It looks even better in person than it does on the website."</p>
+            <p class="review-date">Posted on August 18, 2023</p>
+        </div>
+        <div class="reviews-card">
+            <div class="rating">
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                <i class="fa-solid fa-star" style="color: #ffad33"></i>
+            </div>
+            <div class="user-name">
+                <p>Ava H.</p>
+                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
+            </div>
+            <p class="review-text">"I'm very happy with my purchase. The print has survived multiple heavy washes
+                without fading or cracking. Solid build quality, perfect for casual everyday wear."</p>
+            <p class="review-date">Posted on August 19, 2023</p>
+        </div>
+    </div>
+    <h2 class="card-h2">You might also like</h2>
+    <div class="product-row container">
+        <div class="product-card ">
+            <div class="card-visual">
+                <img src="./images/image 19.png">
+            </div>
+            <div class="card-info">
+                <h3>Polo with Contrast Trims</h3>
+                <div class="product-rating">
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <span>4.0/5</span>
+                </div>
+                <div class="card-price">
+                    <span class="current-price">$212</span>
+                    <span class="old-price">$242</span>
+                    <span class="badge">-20%</span>
+                </div>
+            </div>
+        </div>
+        <div class="product-card ">
+            <div class="card-visual">
+                <img src="./images/image 20.png">
+            </div>
+            <div class="card-info">
+                <h3>Gradient Graphic T-shirt</h3>
+                <div class="product-rating">
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <span>4.0/5</span>
+                </div>
+                <div class="card-price">
+                    <span class="current-price">$145</span>
+                </div>
+            </div>
+        </div>
+        <div class="product-card ">
+            <div class="card-visual">
+                <img src="./images/image 21.png">
+            </div>
+            <div class="card-info">
+                <h3>Polo with Tipping Details</h3>
+                <div class="product-rating">
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <span>4.0/5</span>
+                </div>
+                <div class="card-price">
+                    <span class="current-price">$180</span>
+                </div>
+            </div>
+        </div>
+        <div class="product-card ">
+            <div class="card-visual">
+                <img src="./images/image 22.png">
+            </div>
+            <div class="card-info">
+                <h3>Black Striped T-shirt</h3>
+                <div class="product-rating">
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                    <span>5.0/5</span>
+                </div>
+                <div class="card-price">
+                    <span class="current-price">$120</span>
+                    <span class="old-price">$150</span>
+                    <span class="badge">-30%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="banner">
+            <h2 class="banner-h2">STAY UPTO DATE ABOUT OUR LATEST OFFERS</h2>
+            <form class="banner-form">
+                <i class="fa-regular fa-envelope"></i>
+                <input type="email" placeholder="Enter your email address">
+                <button type="submit">Subscribe to Newsletter</button>
+            </form>
+        </div>
+        <div class="footer-content">
+            <div class="footer-column company-info">
+                <h3>SHOP.CO</h3>
+                <p>We have clothes that suits your style and which you’re proud to wear. From women to men.</p>
+                <div class="social-icons">
+                    <i class="fa-brands fa-square-twitter"></i>
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-square-instagram"></i>
+                    <i class="fa-brands fa-github"></i>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul>
+                    <li>About</li>
+                    <li>Features</li>
+                    <li>Works</li>
+                    <li>Career</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Help</h3>
+                <ul>
+                    <li>Customer Support</li>
+                    <li>Delivery Details</li>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>FAQ</h3>
+                <ul>
+                    <li>Account</li>
+                    <li>Manage Deliveries</li>
+                    <li>Orders</li>
+                    <li>Payments</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li>Free eBooks</li>
+                    <li>Development Tutorial</li>
+                    <li>How to - Blog</li>
+                    <li>Youtube Playlist</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Shop.co © 2000-2023, All Rights Reserved</p>
+            <div class="icons">
+                <i class="fa-brands fa-cc-visa"></i>
+                <i class="fa-brands fa-cc-mastercard"></i>
+                <i class="fa-brands fa-cc-paypal"></i>
+                <i class="fa-brands fa-cc-apple-pay"></i>
+                <i class="fa-brands fa-google-pay"></i>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>

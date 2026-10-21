@@ -10,7 +10,6 @@
         integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
-
 <body>
     <div class="promo-banner">
         <p>Sign up and get 20% off to your first order.
@@ -18,16 +17,27 @@
         </p>
         <i class="fa-solid fa-xmark"></i>
     </div>
-    <header class="header">
+    <header class="header container">
         <div class="burger-icon">
             <i class="fa-solid fa-bars"></i>
         </div>
         <div class="logo">SHOP.CO</div>
-        <ul>
-            <li>Shop</li>
+        <ul id="ul">
+            <li class="has-drop">
+                <a>Shop</a>
+                <button type="button" class="arrow-btn">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </li>
             <li>On Sale</li>
             <li>New Arrivals</li>
             <li>Brands</li>
+        </ul>
+        <ul class="drop-box">
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./detail.html">Details</a></li>
+            <li><a href="./category.html">Casual</a></li>
+            <li><a href="./cart.html">Cart</a></li>
         </ul>
         <div class="header-tools">
             <div class="search-box">
@@ -73,25 +83,25 @@
     <h2 class="card-h2">NEW ARRIVALS</h2>
     <div class="product-row container">
         <div class="product-card ">
-            <div class="card-visual">
-                <a href="./detail.html">
+            <a href="./detail.html" style="text-decoration: none; color: inherit;">
+                <div class="card-visual">
                     <img src="./images/image 7.png">
-                </a>
-            </div>
-            <div class="card-info">
-                <h3>T-SHIRT WITH TAPE DETAILS</h3>
-                <div class="product-rating">
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <span>4.5/5</span>
                 </div>
-                <div class="card-price">
-                    <span class="current-price">$120</span>
+                <div class="card-info">
+                    <h3>T-SHIRT WITH TAPE DETAILS</h3>
+                    <div class="product-rating">
+                        <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                        <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                        <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                        <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                        <i class="fa-solid fa-star" style="color: #ffad33"></i>
+                        <span>4.5/5</span>
+                    </div>
+                    <div class="card-price">
+                        <span class="current-price">$120</span>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="product-card ">
             <div class="card-visual">
@@ -361,6 +371,7 @@
             </div>
         </div>
     </footer>
+    <script src="script.js"></script>
 </body>
 
 </html>
