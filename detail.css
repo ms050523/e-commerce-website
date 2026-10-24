@@ -907,7 +907,7 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 24px;
-        margin: 40px 0 20px 20px;
+        margin: 40px 0 20px 30px;
     }
 
     .company-info {
