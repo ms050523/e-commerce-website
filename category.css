@@ -36,6 +36,7 @@
     align-items: center;
     padding: 24px 0;
     border-bottom: 1px solid #f0f0f0;
+    position: relative;
 }
 
 .sidebar .header {
@@ -492,12 +493,11 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 16px 0;
+        padding: 16px;
         width: 100%;
-        position: relative;
     }
 
-    .header ul,
+    .header #ul,
     .search-box {
         display: none !important;
     }
@@ -510,8 +510,6 @@
     }
 
     .logo {
-        font-size: 26px;
-        font-weight: 700;
         order: 2;
         margin-right: auto;
         margin-left: 16px;
@@ -536,6 +534,7 @@
     }
 
     .drop-box {
+        display: none !important;
         position: absolute;
         top: 100%;
         left: 0;
@@ -543,8 +542,30 @@
         background-color: #ffffff;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         border-radius: 12px;
-        z-index: 999;
+        z-index: 9999;
+        padding: 12px 16px;
+        list-style: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+    }
+
+    .header .drop-box li {
+        width: 100%;
         padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .header .drop-box li:last-child {
+        border-bottom: none;
+    }
+
+    .header .drop-box a {
+        display: block;
+        color: #000000;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
     }
 
     .box {
@@ -715,8 +736,4 @@
     .logo {
         font-size: 26px;
     }
-}
-
-.drop-box.open {
-    display: block !important;
 }
