@@ -34,7 +34,6 @@
         </ul>
         <ul class="drop-box">
             <li><a href="./index.html">Home</a></li>
-            <li><a href="./detail.html">Details</a></li>
             <li><a href="./category.html">Casual</a></li>
             <li><a href="./cart.html">Cart</a></li>
         </ul>
@@ -79,7 +78,7 @@
             </p>
             <div class="section-title">Select Colors</div>
             <div class="colors-wrap">
-                <button class="color-btn color-1">✓</button>
+                <button class="color-btn color-1 active"></button>
                 <button class="color-btn color-2"></button>
                 <button class="color-btn color-3"></button>
             </div>
@@ -92,7 +91,7 @@
             </div>
             <div class="buttons-wrap">
                 <div class="count-box">
-                    <button class="minus-btn">−</button>
+                    <button class="minus-btn disabled">−</button>
                     <span class="count-num">1</span>
                     <button class="plus-btn">+</button>
                 </div>
@@ -344,6 +343,8 @@
             </div>
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.20.0/dist/axios.min.js"></script>
+    <script src="detail.js"></script>
     <script src="script.js"></script>
 </body>
 

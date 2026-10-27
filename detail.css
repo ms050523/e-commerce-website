@@ -239,6 +239,12 @@
     background-color: #31344F;
 }
 
+.color-btn.active {
+    outline: 2px solid #000; 
+    outline-offset: 2px;     
+}
+
+
 .sizes-wrap {
     display: flex;
     gap: 12px;
@@ -292,6 +298,25 @@
     font-size: 20px;
     cursor: pointer;
 }
+
+.minus-btn.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none; 
+}
+
+.count-box {
+    user-select: none;
+}
+
+.minus-btn, .plus-btn {
+    transition: opacity 0.2s ease;
+}
+
+.minus-btn:not(.disabled):hover, .plus-btn:hover {
+    opacity: 0.7;
+}
+
 
 .count-num {
     font-size: 16px;
@@ -555,8 +580,8 @@
 
 .drop-box {
     position: absolute;
-    top: 100%;
-    left: 0;
+    top: 60px;
+    left: 220px;
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -660,9 +685,9 @@
     .drop-box {
         display: none !important;
         position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
+        top: 50px;
+        left: 10px;
+        width: 60%;
         background-color: #ffffff;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         border-radius: 12px;
