@@ -1,7 +1,7 @@
 const API = "https://bed1d07ffac740ee.mokky.dev/products"
+
 const newArrivals = document.getElementById("new-arrivals")
 const topSelling = document.getElementById('top-selling');
-
 
 async function fetchProducts() {
     try {

@@ -1,4 +1,6 @@
 const API = "https://bed1d07ffac740ee.mokky.dev/products"
+const API_CART = "https://bed1d07ffac740ee.mokky.dev/basket"
+
 
 const title = document.getElementsByClassName("title")[0]
 const mainImg = document.getElementsByClassName("main-img")[0]
@@ -14,9 +16,11 @@ const btnPlus = document.getElementsByClassName("plus-btn")[0]
 const btnMinus = document.getElementsByClassName("minus-btn")[0]
 const countNum = document.getElementsByClassName("count-num")[0]
 const colorBtn = document.querySelectorAll(".color-btn")
+const cartBtn = document.getElementsByClassName("cart-btn")[0]
 
 
 const urlParams = new URLSearchParams(window.location.search)
+
 
 const productId = urlParams.get('id')
 console.log(productId);
@@ -27,6 +31,17 @@ async function fetchOneProduct() {
         renderDetailProduct(response.data)
     } catch (error) {
         console.error("Ошибка при загрузке товара:", error);
+    }
+}
+
+async function ADD_TO_CART(id) {
+    const product = await axios.get(API)
+
+    const list = product.data.find(e => e.id === id)
+    try {
+        await axios.post(API_CART, list)
+    } catch (error) {
+        console.log("Ошибка: ", error);
     }
 }
 
@@ -75,6 +90,9 @@ function renderDetailProduct(product) {
     stars.innerHTML = star
     rating.innerHTML = `${product.rating}/5`
 }
+
+        cartBtn.addEventListener('click', () => ADD_TO_CART(element.id))
+
 
 sizeButtons.forEach(btn => {
     btn.addEventListener('click', () => {

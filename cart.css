@@ -261,6 +261,12 @@
     cursor: pointer;
 }
 
+.minus-btn.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none; 
+}
+
 .main-btn {
     width: 100%;
     background: #000000;
