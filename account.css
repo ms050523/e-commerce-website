@@ -1,0 +1,422 @@
+.header-icon {
+    position: relative;
+}
+
+.account-menu {
+    position: absolute;
+    top: calc(100% + 16px);
+    right: 0;
+    width: 240px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    display: none;
+    z-index: 9999;
+    font-size: 15px;
+}
+
+.account-menu.open {
+    display: block;
+}
+
+.account-name {
+    font-weight: 700;
+    padding: 8px 12px 0;
+}
+
+.account-email {
+    color: #666666;
+    font-size: 13px;
+    padding: 0 12px 10px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #f0f0f0;
+    word-break: break-all;
+}
+
+.account-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    background: none;
+    border: none;
+    border-radius: 10px;
+    color: #000000;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.account-link:hover {
+    background-color: #f5f5f5;
+}
+
+.account-logout {
+    color: #ff3333;
+}
+
+.product-card {
+    position: relative;
+}
+
+.fav-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    color: #000000;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.fav-btn:hover {
+    transform: scale(1.15);
+}
+
+.fav-btn.active {
+    color: #ff3333;
+}
+
+.fav-link {
+    position: relative;
+    display: flex;
+    color: inherit;
+    text-decoration: none;
+}
+
+.fav-count {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    background-color: #ff3333;
+    border-radius: 62px;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.search-box {
+    position: relative;
+}
+
+.suggest {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    min-width: 280px;
+    display: none;
+    padding: 8px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    color: #000000;
+    z-index: 9999;
+}
+
+.suggest.open {
+    display: block;
+}
+
+.suggest-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 10px;
+    color: #000000;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.suggest-item:hover,
+.suggest-all:hover {
+    background-color: #f5f5f5;
+}
+
+.suggest-item img {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    background-color: #f0eeed;
+}
+
+.suggest-title {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.suggest-all {
+    display: block;
+    margin-top: 4px;
+    padding: 10px;
+    border-top: 1px solid #f0f0f0;
+    color: #666666;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.suggest-empty {
+    padding: 14px;
+    color: #666666;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .header .search-box.mobile-open {
+        display: flex !important;
+        position: absolute;
+        top: 100%;
+        left: 16px;
+        right: 16px;
+        width: auto;
+        z-index: 9998;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.warn-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: warnFade 0.3s ease;
+}
+
+.warn-box {
+    width: 100%;
+    max-width: 440px;
+    padding: 32px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    text-align: center;
+    animation: warnPop 0.4s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.warn-icon {
+    margin-bottom: 12px;
+    color: #f5a623;
+    font-size: 44px;
+}
+
+.warn-box h2 {
+    margin-bottom: 16px;
+    font-size: 22px;
+}
+
+.warn-item {
+    margin-bottom: 10px;
+    padding: 12px 16px;
+    background-color: #fff4d6;
+    border-radius: 12px;
+    color: #5c4300;
+    text-align: left;
+    word-break: break-word;
+}
+
+.warn-hint {
+    margin: 14px 0 20px;
+    color: #666666;
+    font-size: 14px;
+}
+
+.warn-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #000000;
+    border: none;
+    border-radius: 62px;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+@keyframes warnFade {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes warnPop {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+}
+
+body {
+    animation: pageIn 0.5s ease both;
+}
+
+.card-visual {
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.card-visual img {
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .card-visual img {
+    transform: scale(1.06);
+}
+
+.fav-btn i {
+    display: inline-block;
+}
+
+.fav-btn.pop i {
+    animation: heartPop 0.45s ease;
+}
+
+.fav-count.bump {
+    animation: bump 0.4s ease;
+}
+
+.header-icon i {
+    transition: transform 0.2s;
+}
+
+.header-icon i:hover {
+    transform: scale(1.15);
+}
+
+.drop-box.open,
+.account-menu.open {
+    animation: dropIn 0.2s ease;
+}
+
+.card-btn,
+.hero-content button,
+.main-btn,
+.banner-form button {
+    transition: transform 0.2s, background-color 0.2s, color 0.2s, opacity 0.2s;
+}
+
+.card-btn:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.hero-content button:hover,
+.main-btn:hover,
+.banner-form button:hover {
+    transform: translateY(-2px);
+}
+
+.hero-content > * {
+    animation: riseIn 0.7s ease both;
+}
+
+.hero-content > :nth-child(2) {
+    animation-delay: 0.12s;
+}
+
+.hero-content > :nth-child(3) {
+    animation-delay: 0.24s;
+}
+
+.hero-card {
+    animation: riseIn 0.7s ease both;
+}
+
+.hero-card:nth-child(1) {
+    animation-delay: 0.3s;
+}
+
+.hero-card:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.hero-card:nth-child(3) {
+    animation-delay: 0.5s;
+}
+
+.grid-card .card {
+    transition: transform 0.3s ease;
+}
+
+.grid-card .card:hover {
+    transform: scale(1.02);
+}
+
+.reviews-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reviews-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes pageIn {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes heartPop {
+    40% {
+        transform: scale(1.4);
+    }
+}
+
+@keyframes bump {
+    40% {
+        transform: scale(1.4);
+    }
+}
+
+@keyframes dropIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes riseIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

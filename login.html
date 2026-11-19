@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOP.CO | Вход</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
+        integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+
+<body>
+    <div class="strip">Sign up and get 20% off to your first order.</div>
+
+    <main class="auth-page">
+        <a href="./index.html" class="auth-logo">SHOP.CO</a>
+
+        <div class="auth-box" id="auth-box">
+            <h2 class="auth-title" id="auth-title">С возвращением</h2>
+            <p class="auth-sub" id="auth-sub">Введите email и пароль, чтобы войти</p>
+
+            <div class="auth-tabs" id="auth-tabs" data-active="login-form">
+                <button type="button" class="auth-tab active" data-form="login-form">Вход</button>
+                <button type="button" class="auth-tab" data-form="register-form">Регистрация</button>
+            </div>
+
+            <form id="login-form" class="auth-form active">
+                <label>Email
+                    <input type="email" id="login-email" class="auth-input" placeholder="name@mail.com" autocomplete="username">
+                </label>
+                <label>Пароль
+                    <div class="pass-wrap">
+                        <input type="password" id="login-password" class="auth-input" placeholder="Ваш пароль" autocomplete="current-password">
+                        <button type="button" class="eye"><i class="fa-regular fa-eye"></i></button>
+                    </div>
+                </label>
+                <p class="auth-error" id="login-error"></p>
+                <button type="submit" class="auth-btn" id="login-btn"><span>Войти</span></button>
+            </form>
+
+            <form id="register-form" class="auth-form">
+                <label>Имя
+                    <input type="text" id="reg-name" class="auth-input" placeholder="Как вас зовут" autocomplete="name">
+                </label>
+                <label>Email
+                    <input type="email" id="reg-email" class="auth-input" placeholder="name@mail.com" autocomplete="email">
+                </label>
+                <label>Пароль
+                    <div class="pass-wrap">
+                        <input type="password" id="reg-password" class="auth-input" placeholder="Минимум 6 символов" autocomplete="new-password">
+                        <button type="button" class="eye"><i class="fa-regular fa-eye"></i></button>
+                    </div>
+                    <div class="strength"><span id="strength-bar"></span></div>
+                </label>
+                <label>Повторите пароль
+                    <div class="pass-wrap">
+                        <input type="password" id="reg-password2" class="auth-input" placeholder="Еще раз пароль" autocomplete="new-password">
+                        <button type="button" class="eye"><i class="fa-regular fa-eye"></i></button>
+                    </div>
+                </label>
+                <p class="auth-error" id="reg-error"></p>
+                <button type="submit" class="auth-btn" id="reg-btn"><span>Создать аккаунт</span></button>
+            </form>
+
+            <a href="./index.html" class="auth-back">← Вернуться в магазин</a>
+
+            <div class="auth-success" id="auth-success">
+                <div class="check"><i class="fa-solid fa-check"></i></div>
+                <p id="auth-success-text">Добро пожаловать!</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.20.0/dist/axios.min.js"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="login.js"></script>
+</body>
+
+</html>

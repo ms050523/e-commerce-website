@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOP.CO | Мои заказы</title>
+    <link rel="stylesheet" href="cart.css">
+    <link rel="stylesheet" href="orders.css">
+    <link rel="stylesheet" href="account.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
+        integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+    <div class="promo-banner">
+        <p>Sign up and get 20% off to your first order. <a href="#">Sign Up Now</a></p>
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+    <header class="header container">
+        <div class="burger-icon">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <div class="logo">SHOP.CO</div>
+        <ul id="ul">
+            <li class="has-drop">
+                <a>Shop</a>
+                <button type="button" class="arrow-btn">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </li>
+            <li>On Sale</li>
+            <li>New Arrivals</li>
+            <li>Brands</li>
+        </ul>
+        <ul class="drop-box">
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./category.html">Casual</a></li>
+            <li><a href="./cart.html">Cart</a></li>
+        </ul>
+        <div class="header-tools">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search for products...">
+            </div>
+            <div class="header-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <i class="fa-solid fa-cart-shopping"></i>
+                <i class="fa-regular fa-circle-user"></i>
+            </div>
+        </div>
+    </header>
+    <h1 class="title container">МОИ ЗАКАЗЫ</h1>
+    <div class="orders-wrap container" id="orders-wrap"></div>
+    <footer class="footer">
+        <div class="banner">
+            <h2 class="banner-h2">STAY UPTO DATE ABOUT OUR LATEST OFFERS</h2>
+            <form class="banner-form">
+                <i class="fa-regular fa-envelope"></i>
+                <input type="email" placeholder="Enter your email address">
+                <button type="submit">Subscribe to Newsletter</button>
+            </form>
+        </div>
+        <div class="footer-content">
+            <div class="footer-column company-info">
+                <h3>SHOP.CO</h3>
+                <p>We have clothes that suits your style and which you’re proud to wear. From women to men.</p>
+                <div class="social-icons">
+                    <i class="fa-brands fa-square-twitter"></i>
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-square-instagram"></i>
+                    <i class="fa-brands fa-github"></i>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul>
+                    <li>About</li>
+                    <li>Features</li>
+                    <li>Works</li>
+                    <li>Career</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Help</h3>
+                <ul>
+                    <li>Customer Support</li>
+                    <li>Delivery Details</li>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>FAQ</h3>
+                <ul>
+                    <li>Account</li>
+                    <li>Manage Deliveries</li>
+                    <li>Orders</li>
+                    <li>Payments</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li>Free eBooks</li>
+                    <li>Development Tutorial</li>
+                    <li>How to - Blog</li>
+                    <li>Youtube Playlist</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Shop.co © 2000-2023, All Rights Reserved</p>
+            <div class="icons">
+                <i class="fa-brands fa-cc-visa"></i>
+                <i class="fa-brands fa-cc-mastercard"></i>
+                <i class="fa-brands fa-cc-paypal"></i>
+                <i class="fa-brands fa-cc-apple-pay"></i>
+                <i class="fa-brands fa-google-pay"></i>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.20.0/dist/axios.min.js"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="shared.js"></script>
+    <script src="orders.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
