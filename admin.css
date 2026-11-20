@@ -394,19 +394,20 @@ textarea.field {
     border-radius: 8px;
     color: #ffffff;
     font-size: 12px;
-    white-space: nowrap;
+    width: max-content;
+    max-width: 150px;
     opacity: 0;
     pointer-events: none;
     transform: translate(-50%, -110%);
     transition: opacity 0.15s;
 }
 
-.bar-col:first-child::after {
+.bar-col.tip-left::after {
     left: 0;
     transform: translate(0, -110%);
 }
 
-.bar-col:last-child::after {
+.bar-col.tip-right::after {
     left: auto;
     right: 0;
     transform: translate(0, -110%);
@@ -1275,6 +1276,10 @@ button.stat:hover {
 @media (max-width: 900px) {
     .layout {
         flex-direction: column;
+    }
+
+    .main {
+        overflow-x: clip;
     }
 
     .side {

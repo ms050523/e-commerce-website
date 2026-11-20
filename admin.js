@@ -379,7 +379,7 @@ function renderChart() {
     });
 
     let html = ""
-    days.forEach(d => {
+    days.forEach((d, index) => {
         let height = 0
         if (max > 0) {
             height = Math.round(d.sum / max * 100)
@@ -400,7 +400,16 @@ function renderChart() {
         if (d.today) {
             barClass += " today"
         }
-        html += `<div class="bar-col" data-tip="${d.full}: ${money(d.sum)}, заказов: ${d.count}">
+        let tipClass = ""
+        const place = (index + 0.5) / days.length
+        if (place < 0.3) {
+            tipClass = "tip-left"
+        }
+        if (place > 0.7) {
+            tipClass = "tip-right"
+        }
+
+        html += `<div class="bar-col ${tipClass}" data-tip="${d.full}: ${money(d.sum)}, заказов: ${d.count}">
                 <span class="bar-value">${value}</span>
                 <div class="bar-track"><div class="${barClass}" style="height: ${height}%"></div></div>
                 <span class="bar-label">${d.label}</span>
