@@ -9,6 +9,12 @@ const statusNames = {
     canceled: "Отменён"
 }
 
+const paymentNames = {
+    cash: "Наличными при получении",
+    card: "Банковской картой при получении",
+    sbp: "Переводом по СБП"
+}
+
 let myOrders = []
 
 function esc(text) {
@@ -98,6 +104,11 @@ function renderOrders() {
             discountLine = `<div class="ord-line"><span>Скидка</span><span>-$${order.discount}</span></div>`
         }
 
+        let paymentLine = ""
+        if (paymentNames[order.payment]) {
+            paymentLine = `<div>Оплата: ${paymentNames[order.payment]}</div>`
+        }
+
         let cancelBtn = ""
         if (status === "new") {
             cancelBtn = `<button type="button" class="ord-cancel" data-id="${order.id}">Отменить заказ</button>`
@@ -117,6 +128,7 @@ function renderOrders() {
                         <div class="ord-info">
                             <div>${esc(order.customerName)}, ${esc(order.phone)}</div>
                             <div>${esc(order.address)}</div>
+                            ${paymentLine}
                             ${cancelBtn}
                         </div>
                         <div class="ord-sums">

@@ -8,6 +8,12 @@ const statusNames = {
     canceled: "Отменён"
 }
 
+const paymentNames = {
+    cash: "Наличными при получении",
+    card: "Банковской картой при получении",
+    sbp: "Переводом по СБП"
+}
+
 const categoryNames = {
     "new-arrivals": "New Arrivals",
     "top-selling": "Top Selling"
@@ -700,6 +706,9 @@ function renderDrawer() {
     }
     if (order.address) {
         contact += `<div><i class="fa-solid fa-location-dot"></i><span>${safe(order.address)}</span></div>`
+    }
+    if (paymentNames[order.payment]) {
+        contact += `<div><i class="fa-solid fa-wallet"></i><span>${paymentNames[order.payment]}</span></div>`
     }
 
     let discountLine = ""

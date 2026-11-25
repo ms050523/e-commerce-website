@@ -159,6 +159,30 @@
                     <label>Адрес доставки
                         <input type="text" id="o-address" class="modal-input" placeholder="Москва, ул. Тверская, д. 7, кв. 12">
                     </label>
+                    <fieldset class="pay-box">
+                        <legend>Способ оплаты</legend>
+                        <label class="pay-option">
+                            <input type="radio" name="payment" value="cash" checked>
+                            <span class="pay-card">
+                                <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
+                                <span class="pay-text"><b>Наличными</b><small>при получении заказа</small></span>
+                            </span>
+                        </label>
+                        <label class="pay-option">
+                            <input type="radio" name="payment" value="card">
+                            <span class="pay-card">
+                                <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
+                                <span class="pay-text"><b>Банковской картой</b><small>курьеру при получении</small></span>
+                            </span>
+                        </label>
+                        <label class="pay-option">
+                            <input type="radio" name="payment" value="sbp">
+                            <span class="pay-card">
+                                <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i>
+                                <span class="pay-text"><b>Переводом по СБП</b><small>реквизиты пришлём после подтверждения</small></span>
+                            </span>
+                        </label>
+                    </fieldset>
                     <div class="modal-sum">
                         <div class="modal-line"><span>Товары</span><span id="m-subtotal">$0</span></div>
                         <div class="modal-line"><span>Доставка</span><span id="m-delivery">$0</span></div>

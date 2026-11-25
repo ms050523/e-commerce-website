@@ -198,6 +198,57 @@ const inputEmail = document.getElementById("o-email")
 const inputAddress = document.getElementById("o-address")
 const orderInputs = [inputName, inputPhone, inputEmail, inputAddress]
 
+const paymentNames = {
+    cash: "Наличными при получении",
+    card: "Банковской картой при получении",
+    sbp: "Переводом по СБП"
+}
+
+function showNotice(iconClass, title, text, buttonText, onButton, laterText) {
+    const overlay = document.createElement("div")
+    overlay.className = "modal-backdrop open"
+
+    const box = document.createElement("div")
+    box.className = "modal notice"
+
+    const icon = document.createElement("i")
+    icon.className = `fa-solid ${iconClass} notice-icon`
+
+    const heading = document.createElement("h2")
+    heading.className = "modal-title"
+    heading.textContent = title
+
+    const message = document.createElement("p")
+    message.className = "notice-text"
+    message.textContent = text
+
+    const button = document.createElement("button")
+    button.type = "button"
+    button.className = "main-btn"
+    button.textContent = buttonText
+    button.addEventListener('click', () => {
+        overlay.remove()
+        onButton()
+    })
+
+    box.appendChild(icon)
+    box.appendChild(heading)
+    box.appendChild(message)
+    box.appendChild(button)
+
+    if (laterText) {
+        const later = document.createElement("button")
+        later.type = "button"
+        later.className = "notice-later"
+        later.textContent = laterText
+        later.addEventListener('click', () => overlay.remove())
+        box.appendChild(later)
+    }
+
+    overlay.appendChild(box)
+    document.body.appendChild(overlay)
+}
+
 function openModal() {
     const totals = getTotals(basketData)
     document.getElementById("m-subtotal").textContent = `$${totals.subtotal}`
@@ -207,7 +258,7 @@ function openModal() {
     const session = getSession()
     if (session !== null) {
         if (inputName.value === "") {
-            inputName.value = session.user.name
+            inputName.value = String(session.user.name).replace(/[0-9]/g, "")
         }
         if (inputEmail.value === "") {
             inputEmail.value = session.user.email
@@ -232,8 +283,9 @@ checkoutBtn.addEventListener('click', () => {
     }
 
     if (getSession() === null) {
-        alert("Чтобы оформить заказ, войдите в аккаунт")
-        window.location.href = "./login.html?next=cart.html"
+        showNotice("fa-circle-user", "Нужен аккаунт", "Чтобы оформить заказ, войдите в аккаунт. Товары в корзине сохранятся", "Войти", () => {
+            window.location.href = "./login.html?next=cart.html"
+        }, "Позже")
         return
     }
 
@@ -303,6 +355,19 @@ orderInputs.forEach(input => {
     input.addEventListener('input', () => input.classList.remove("invalid"))
 })
 
+const nameWarning = "В имени нельзя использовать цифры"
+
+inputName.addEventListener('input', () => {
+    const clean = inputName.value.replace(/[0-9]/g, "")
+    if (clean !== inputName.value) {
+        inputName.value = clean
+        modalError.textContent = nameWarning
+    }
+    else if (modalError.textContent === nameWarning) {
+        modalError.textContent = ""
+    }
+})
+
 orderForm.addEventListener('submit', async (event) => {
     event.preventDefault()
 
@@ -333,13 +398,21 @@ orderForm.addEventListener('submit', async (event) => {
     const state = await getAccountState(session.user.id)
     if (state.banned) {
         clearSession()
-        alert(state.banText)
-        window.location.href = "./index.html"
+        closeModal()
+        showNotice("fa-ban", "Аккаунт заблокирован", state.banText, "Понятно", () => {
+            window.location.href = "./index.html"
+        })
         return
     }
     if (state.noOrders) {
         modalError.textContent = state.noOrdersText
         return
+    }
+
+    let payment = "cash"
+    const checkedPayment = document.querySelector('input[name="payment"]:checked')
+    if (checkedPayment) {
+        payment = checkedPayment.value
     }
 
     const totals = getTotals(basketData)
@@ -361,6 +434,7 @@ orderForm.addEventListener('submit', async (event) => {
         phone: phone,
         email: email,
         address: address,
+        payment: payment,
         items: items,
         subtotal: totals.subtotal,
         discount: 0,
@@ -382,7 +456,7 @@ orderForm.addEventListener('submit', async (event) => {
         renderBascket(basketData)
         orderForm.reset()
 
-        modalDoneText.textContent = `Номер вашего заказа: №${response.data.id}. Мы скоро свяжемся с вами по телефону`
+        modalDoneText.textContent = `Номер вашего заказа: №${response.data.id}. Оплата: ${paymentNames[payment]}. Мы скоро свяжемся с вами по телефону`
         modalFormBox.hidden = true
         modalDone.hidden = false
     } catch (error) {
