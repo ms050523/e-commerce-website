@@ -15,7 +15,9 @@ const sizeButtons = document.querySelectorAll(".size-btn")
 const btnPlus = document.getElementsByClassName("plus-btn")[0]
 const btnMinus = document.getElementsByClassName("minus-btn")[0]
 const countNum = document.getElementsByClassName("count-num")[0]
-const colorBtn = document.querySelectorAll(".color-btn")
+const colorsWrap = document.querySelector(".colors-wrap")
+const colorName = document.getElementById("color-name")
+let colorBtn = []
 const cartBtn = document.getElementsByClassName("cart-btn")[0]
 
 
@@ -26,9 +28,15 @@ const productId = urlParams.get('id')
 
 let quantity = 1
 
+// true - если этот товар уже лежит в корзине
 let inCart = false
 
+// сюда сохраняем товар после загрузки
 let currentProduct = null
+
+let currentImages = []
+let currentColors = []
+let currentColorIndex = 0
 
 async function fetchOneProduct() {
     try {
@@ -39,11 +47,13 @@ async function fetchOneProduct() {
     }
 }
 
+// товар уже в корзине - меняем кнопку
 function setInCart() {
     inCart = true
     cartBtn.textContent = "Go to Cart"
 }
 
+// проверяем при открытии страницы, есть ли товар в корзине
 async function checkCart() {
     const session = getSession()
     if (session === null) {
@@ -66,25 +76,22 @@ async function checkCart() {
 async function ADD_TO_CART() {
     const session = getSession()
     if (session === null) {
-        alert("Чтобы добавить товар в корзину, войдите в аккаунт")
-        window.location.href = `./login.html?next=${encodeURIComponent("detail.html?id=" + productId)}`
+        showToast("Войдите в аккаунт, чтобы добавить товар в корзину", "info", "Войти", `./login.html?next=${encodeURIComponent("detail.html?id=" + productId)}`)
         return
     }
 
+    // выбранный размер
     const activeSize = document.querySelector(".size-btn.active")
     const size = activeSize.textContent
 
-    const activeColor = document.querySelector(".color-btn.active")
+    // выбранный цвет
     let color = "Olive"
-    if (activeColor.classList.contains("color-2")) {
-        color = "Green"
-    }
-    if (activeColor.classList.contains("color-3")) {
-        color = "Navy"
+    if (currentColors[currentColorIndex]) {
+        color = currentColors[currentColorIndex].name
     }
 
     if (currentProduct === null) {
-        alert("Товар еще загружается, попробуйте через секунду")
+        showToast("Товар ещё загружается, попробуйте через секунду", "info")
         return
     }
 
@@ -94,21 +101,25 @@ async function ADD_TO_CART() {
     const state = await getAccountState(session.user.id)
     if (state.banned) {
         clearSession()
-        alert(state.banText)
-        window.location.href = "./index.html"
+        showToast(state.banText, "error")
+        setTimeout(() => {
+            window.location.href = "./index.html"
+        }, 2500)
         return
     }
 
     try {
+        // товар уже загружен, второй раз его не запрашиваем
         const product = currentProduct
 
+        // еще раз смотрим корзину, вдруг товар уже добавили (например в другой вкладке)
         const basketResponse = await axios.get(API_CART)
         const found = basketResponse.data.find(e => {
             return String(e.userId) === String(session.user.id) && Number(e.productId) === Number(product.id)
         })
 
         if (found) {
-            alert("Этот товар уже в корзине")
+            showToast("Этот товар уже в корзине", "info", "В корзину", "./cart.html")
             setInCart()
         }
         else {
@@ -116,13 +127,13 @@ async function ADD_TO_CART() {
                 userId: session.user.id,
                 productId: product.id,
                 title: product.title,
-                imageUrl: product.imageUrl,
+                imageUrl: currentImages[currentColorIndex] || product.imageUrl,
                 price: product.currentPrice,
                 size: size,
                 color: color,
                 quantity: quantity
             })
-            alert("Товар добавлен в корзину")
+            showToast("Товар добавлен в корзину", "success", "Перейти в корзину", "./cart.html")
             setInCart()
         }
     } catch (error) {
@@ -134,10 +145,122 @@ async function ADD_TO_CART() {
     }
 }
 
+function buildColors(product) {
+    const list = []
+    const used = []
+
+    if (Array.isArray(product.colors)) {
+        product.colors.forEach(item => {
+            if (!item || !item.name || used.includes(String(item.name).toLowerCase())) {
+                return
+            }
+            let hex = "#000000"
+            if (/^#[0-9a-fA-F]{3,8}$/.test(item.hex)) {
+                hex = item.hex
+            }
+            used.push(String(item.name).toLowerCase())
+            list.push({ name: item.name, hex: hex, image: item.image || product.imageUrl })
+        });
+    }
+
+    if (list.length > 0) {
+        return list
+    }
+
+    const extra = product.colorImages || []
+    return [
+        { name: "Olive", hex: "#4F4E44", image: product.imageUrl },
+        { name: "Green", hex: "#314F4A", image: extra[0] || product.imageUrl },
+        { name: "Navy", hex: "#31344F", image: extra[1] || product.imageUrl }
+    ]
+}
+
+function renderColors() {
+    colorsWrap.innerHTML = ""
+    currentColors.forEach((item, index) => {
+        const btn = document.createElement("button")
+        btn.type = "button"
+        btn.className = "color-btn"
+        btn.style.backgroundColor = item.hex
+        btn.title = item.name
+        btn.setAttribute("aria-label", item.name)
+        btn.addEventListener('click', () => showColorImage(index))
+        colorsWrap.appendChild(btn)
+    });
+    colorBtn = colorsWrap.querySelectorAll(".color-btn")
+}
+
+function renderThumbs() {
+    if (!smallImages || currentProduct === null) {
+        return
+    }
+
+    smallImages.innerHTML = ""
+    currentImages.forEach((url, index) => {
+        const img = document.createElement("img")
+        img.src = url
+        img.alt = currentProduct.title
+        img.dataset.index = index
+        if (index === currentColorIndex) {
+            img.classList.add("active")
+        }
+        smallImages.appendChild(img)
+    });
+}
+
+function showColorImage(index) {
+    currentColorIndex = index
+
+    if (currentColors[index]) {
+        colorName.textContent = currentColors[index].name
+    }
+
+    colorBtn.forEach((c, i) => {
+        if (i === index) {
+            c.classList.add("active")
+        }
+        else {
+            c.classList.remove("active")
+        }
+    })
+
+    if (smallImages) {
+        smallImages.querySelectorAll("img").forEach((img, i) => {
+            if (i === index) {
+                img.classList.add("active")
+            }
+            else {
+                img.classList.remove("active")
+            }
+        })
+    }
+
+    const url = currentImages[index]
+    if (!url || mainImg.getAttribute("src") === url) {
+        return
+    }
+
+    mainImg.classList.add("swap")
+    const loader = new Image()
+    loader.onload = () => {
+        mainImg.src = url
+        mainImg.classList.remove("swap")
+    }
+    loader.onerror = () => {
+        mainImg.src = url
+        mainImg.classList.remove("swap")
+    }
+    loader.src = url
+}
+
 function renderDetailProduct(product) {
     currentProduct = product
     title.innerHTML = product.title
-    mainImg.src = product.imageUrl
+    currentColors = buildColors(product)
+    currentImages = currentColors.map(item => item.image)
+    currentColorIndex = 0
+    renderColors()
+    mainImg.src = currentImages[0]
     priceNow.innerHTML = `$${product.currentPrice}`
 
 
@@ -155,13 +278,8 @@ function renderDetailProduct(product) {
         saleBadge.style.display = 'none'
     }
 
-    if (smallImages) {
-        smallImages.innerHTML = `
-            <img src="${product.imageUrl}" alt="${product.title}">
-            <img src="${product.imageUrl}" alt="${product.title}">
-            <img src="${product.imageUrl}" alt="${product.title}">
-        `;
-    }
+    renderThumbs()
+    showColorImage(0)
 
     description.innerHTML = product.description
 
@@ -198,12 +316,14 @@ sizeButtons.forEach(btn => {
     })
 });
 
-colorBtn.forEach(e => {
-    e.addEventListener('click', () => {
-        colorBtn.forEach(c => c.classList.remove("active"))
-        e.classList.add("active")
+if (smallImages) {
+    smallImages.addEventListener('click', (event) => {
+        const img = event.target.closest("img")
+        if (img) {
+            showColorImage(Number(img.dataset.index))
+        }
     })
-});
+}
 
 btnPlus.addEventListener('click', () => {
     quantity++

@@ -15,7 +15,7 @@
         <p>Sign up and get 20% off to your first order.
             <a href="#">Sign Up Now</a>
         </p>
-        <i class="fa-solid fa-xmark"></i>
+        <button type="button" class="promo-close" aria-label="Закрыть баннер"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     </div>
     <header class="header container">
         <div class="burger-icon">
@@ -40,11 +40,11 @@
         </ul>
         <div class="header-tools">
             <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search for products...">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <input type="search" name="q" autocomplete="off" inputmode="search" enterkeyhint="search" aria-label="Поиск товаров" placeholder="Поиск товаров, например T-shirt…">
             </div>
             <div class="header-icon">
-                <i class="fa-solid fa-magnifying-glass"></i>
+                <button type="button" class="search-toggle" aria-label="Открыть поиск" aria-expanded="false"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
                 <i class="fa-solid fa-cart-shopping"></i>
                 <i class="fa-regular fa-circle-user"></i>
             </div>
@@ -77,12 +77,8 @@
                 offers
                 superior comfort and style.
             </p>
-            <div class="section-title">Select Colors</div>
-            <div class="colors-wrap">
-                <button class="color-btn color-1 active"></button>
-                <button class="color-btn color-2"></button>
-                <button class="color-btn color-3"></button>
-            </div>
+            <div class="section-title">Select Colors <span class="color-name" id="color-name"></span></div>
+            <div class="colors-wrap"></div>
             <div class="section-title">Choose Size</div>
             <div class="sizes-wrap">
                 <button class="size-btn">Small</button>
@@ -100,102 +96,33 @@
             </div>
         </div>
     </div>
-    <div class="reviews container">
-        <div class="reviews-card">
-            <div class="rating">
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-            </div>
-            <div class="user-name">
-                <p>Samantha D.</p>
-                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
-            </div>
-            <p class="review-text">"I absolutely love this t-shirt! The design is unique and the fabric feels so
-                comfortable. As a fellow designer, I appreciate the attention to detail. It's become my favorite go-to
-                shirt."</p>
-            <p class="review-date">Posted on August 14, 2023</p>
+    <div class="reviews-head container">
+        <div class="reviews-title-box">
+            <h2 class="reviews-title">Отзывы <span id="reviews-count">0</span></h2>
+            <div class="reviews-avg" id="reviews-avg"></div>
         </div>
-        <div class="reviews-card">
-            <div class="rating">
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-            </div>
-            <div class="user-name">
-                <p>Alex M.</p>
-                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
-            </div>
-            <p class="review-text">"The t-shirt exceeded my expectations! The colors are vibrant and the print quality
-                is top-notch. Being a UI/UX designer myself, I'm quite picky about aesthetics, and this t-shirt
-                definitely gets a thumbs up from me."</p>
-            <p class="review-date">Posted on August 15, 2023</p>
-        </div>
-        <div class="reviews-card">
-            <div class="rating">
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-            </div>
-            <div class="user-name">
-                <p>Ethan R.</p>
-                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
-            </div>
-            <p class="review-text">"This shirt is a total game-changer for my wardrobe. The fit is perfect around the
-                shoulders and it doesn't shrink after washing. Will definitely be ordering in more colors soon!"</p>
-            <p class="review-date">Posted on August 16, 2023</p>
-        </div>
-        <div class="reviews-card">
-            <div class="rating">
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-            </div>
-            <div class="user-name">
-                <p>Olivia P.</p>
-                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
-            </div>
-            <p class="review-text">"Finding clothes that align with my personal style used to be a challenge until I
-                discovered Shop.co. The minimalist vibe of this graphic tee is exactly what I was looking for. Highly
-                recommend!"</p>
-            <p class="review-date">Posted on August 17, 2023</p>
-        </div>
-        <div class="reviews-card">
-            <div class="rating">
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-            </div>
-            <div class="user-name">
-                <p>Liam K.</p>
-                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
-            </div>
-            <p class="review-text">"Super fast shipping and amazing customer support! The fabric is incredibly soft and
-                feels premium. It looks even better in person than it does on the website."</p>
-            <p class="review-date">Posted on August 18, 2023</p>
-        </div>
-        <div class="reviews-card">
-            <div class="rating">
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                <i class="fa-solid fa-star" style="color: #ffad33"></i>
-            </div>
-            <div class="user-name">
-                <p>Ava H.</p>
-                <i class="fa-solid fa-circle-check" style="color: rgb(70, 146, 31);"></i>
-            </div>
-            <p class="review-text">"I'm very happy with my purchase. The print has survived multiple heavy washes
-                without fading or cracking. Solid build quality, perfect for casual everyday wear."</p>
-            <p class="review-date">Posted on August 19, 2023</p>
-        </div>
+        <button type="button" class="write-btn" id="write-review-btn"><i class="fa-solid fa-pen"></i> Написать отзыв</button>
     </div>
+    <form class="review-form container" id="review-form" hidden>
+        <p class="review-form-title">Ваша оценка</p>
+        <div class="star-pick" id="star-pick">
+            <button type="button" data-star="1" aria-label="1 звезда"><i class="fa-regular fa-star"></i></button>
+            <button type="button" data-star="2" aria-label="2 звезды"><i class="fa-regular fa-star"></i></button>
+            <button type="button" data-star="3" aria-label="3 звезды"><i class="fa-regular fa-star"></i></button>
+            <button type="button" data-star="4" aria-label="4 звезды"><i class="fa-regular fa-star"></i></button>
+            <button type="button" data-star="5" aria-label="5 звёзд"><i class="fa-regular fa-star"></i></button>
+        </div>
+        <textarea id="review-text" class="review-input" rows="4" maxlength="500" placeholder="Расскажите, что вам понравилось или не понравилось"></textarea>
+        <div class="review-foot">
+            <span class="review-counter" id="review-counter">0/500</span>
+            <p class="review-error" id="review-error"></p>
+            <div class="review-btns">
+                <button type="button" class="review-cancel" id="review-cancel">Отмена</button>
+                <button type="submit" class="review-submit" id="review-submit">Отправить</button>
+            </div>
+        </div>
+    </form>
+    <div class="reviews container" id="reviews-list"></div>
     <h2 class="card-h2">You might also like</h2>
     <div class="product-row container">
         <div class="product-card ">
@@ -349,6 +276,7 @@
     <script src="auth.js"></script>
     <script src="shared.js"></script>
     <script src="detail.js"></script>
+    <script src="reviews.js"></script>
     <script src="script.js"></script>
 </body>
 

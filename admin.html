@@ -83,12 +83,20 @@
                         <p class="chart-note" id="chart-note"></p>
                     </div>
 
-                    <div class="panel">
+                    <div class="dash-grid">
+                        <div class="panel">
+                            <div class="panel-head">
+                                <h3>Самые продаваемые товары <span class="panel-sub" id="top-period"></span></h3>
+                            </div>
+                            <div id="top-products"></div>
+                        </div>
+                        <div class="panel">
                         <div class="panel-head">
                             <h3>Последние заказы</h3>
                             <button type="button" class="link-btn" id="go-orders-btn">Все заказы</button>
                         </div>
                         <div id="latest-orders"></div>
+                    </div>
                     </div>
                 </section>
 
@@ -162,6 +170,12 @@
             <label class="wide">Ссылка на картинку
                 <input type="text" id="p-image" class="field" placeholder="./images/... или https://...">
             </label>
+            <div class="wide color-box">
+                <p class="color-title">Цвета товара</p>
+                <p class="color-hint">Каждый цвет указывается один раз. Фото цвета подставляется на странице товара, если его нет, остаётся основное. Если цветов нет, показываются стандартные.</p>
+                <div id="color-list" class="color-list"></div>
+                <button type="button" class="mini" id="add-color-btn"><i class="fa-solid fa-plus"></i> Добавить цвет</button>
+            </div>
             <label>Цена, $
                 <input type="number" id="p-price" class="field" placeholder="145" min="0">
             </label>

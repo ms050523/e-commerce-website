@@ -1610,3 +1610,136 @@ button.stat:hover {
         transition-duration: 0.01ms !important;
     }
 }
+
+.color-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.color-title {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.color-hint {
+    color: #8a8a92;
+    font-size: 12px;
+}
+
+.color-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.color-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 32px;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f1f3;
+}
+
+.color-hex {
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+    background: none;
+    border: 1px solid #e0e0e4;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.color-image-input {
+    grid-column: 1 / -1;
+}
+
+.color-box .mini {
+    align-self: flex-start;
+}
+
+.dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.dash-grid .panel {
+    margin-bottom: 0;
+}
+
+.panel-sub {
+    margin-left: 6px;
+    color: #8a8a92;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.top-row {
+    display: grid;
+    grid-template-columns: 24px 44px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid #f1f1f3;
+}
+
+.top-rank {
+    color: #a0a0a8;
+    font-weight: 600;
+    text-align: center;
+}
+
+.top-row img {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    background-color: #f1f1f3;
+}
+
+.top-info {
+    min-width: 0;
+}
+
+.top-title {
+    margin-bottom: 8px;
+    overflow: hidden;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.progress-track {
+    height: 5px;
+    background-color: #f1f1f3;
+    border-radius: 3px;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #2f5fe3;
+    border-radius: 3px;
+}
+
+.top-qty {
+    font-weight: 600;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.top-qty span {
+    display: block;
+    color: #8a8a92;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+@media (max-width: 1000px) {
+    .dash-grid {
+        grid-template-columns: 1fr;
+    }
+}

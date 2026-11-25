@@ -283,6 +283,49 @@ function productCardInner(element) {
             </a>`
 }
 
+function showToast(text, kind, actionText, actionHref) {
+    let box = document.getElementById("site-toasts")
+    if (!box) {
+        box = document.createElement("div")
+        box.id = "site-toasts"
+        document.body.appendChild(box)
+    }
+
+    let iconClass = "fa-circle-info"
+    if (kind === "success") {
+        iconClass = "fa-circle-check"
+    }
+    if (kind === "error") {
+        iconClass = "fa-circle-exclamation"
+    }
+
+    const toast = document.createElement("div")
+    toast.className = `site-toast ${kind || "info"}`
+
+    const icon = document.createElement("i")
+    icon.className = `fa-solid ${iconClass}`
+
+    const message = document.createElement("span")
+    message.textContent = text
+
+    toast.appendChild(icon)
+    toast.appendChild(message)
+
+    if (actionText && actionHref) {
+        const link = document.createElement("a")
+        link.href = actionHref
+        link.textContent = actionText
+        toast.appendChild(link)
+    }
+
+    box.appendChild(toast)
+
+    setTimeout(() => {
+        toast.classList.add("hide")
+        setTimeout(() => toast.remove(), 300)
+    }, 3500)
+}
+
 function addHeaderHeart() {
     const icons = document.querySelector(".header-icon")
     if (!icons) {
@@ -315,6 +358,98 @@ async function loadSuggestProducts() {
     return suggestProducts
 }
 
+const searchMoney = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 })
+
+const popularQueries = ["T-shirt", "Jeans", "Hoodie", "Shorts"]
+
+function searchEscape(text) {
+    let value = ""
+    if (text !== undefined && text !== null) {
+        value = String(text)
+    }
+    return value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+}
+
+function searchWords(text) {
+    return String(text).toLowerCase().split(/\s+/).filter(word => word !== "")
+}
+
+function searchScore(product, words) {
+    const title = String(product.title).toLowerCase()
+    let score = 0
+    for (let i = 0; i < words.length; i++) {
+        const at = title.indexOf(words[i])
+        if (at === -1) {
+            return -1
+        }
+        if (at === 0) {
+            score += 3
+        }
+        else if (title[at - 1] === " ") {
+            score += 2
+        }
+        else {
+            score += 1
+        }
+    }
+    return score
+}
+
+function findProducts(products, words) {
+    const found = []
+    products.forEach(product => {
+        const score = searchScore(product, words)
+        if (score >= 0) {
+            found.push({ product: product, score: score })
+        }
+    });
+    found.sort((a, b) => {
+        if (b.score !== a.score) {
+            return b.score - a.score
+        }
+        return String(a.product.title).localeCompare(String(b.product.title))
+    })
+    return found.map(item => item.product)
+}
+
+function searchHighlight(title, words) {
+    const full = String(title)
+    if (words.length === 0) {
+        return searchEscape(full)
+    }
+    const pattern = words.map(word => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")
+    const parts = full.split(new RegExp(`(${pattern})`, "gi"))
+    let html = ""
+    parts.forEach((part, index) => {
+        if (index % 2 === 1) {
+            html += `<mark>${searchEscape(part)}</mark>`
+        }
+        else {
+            html += searchEscape(part)
+        }
+    });
+    return html
+}
+
+function searchPlural(number, forms) {
+    const last = number % 10
+    const lastTwo = number % 100
+    if (lastTwo >= 11 && lastTwo <= 14) {
+        return forms[2]
+    }
+    if (last === 1) {
+        return forms[0]
+    }
+    if (last >= 2 && last <= 4) {
+        return forms[1]
+    }
+    return forms[2]
+}
+
 function setupSearch() {
     const box = document.querySelector(".search-box")
     if (!box) {
@@ -322,75 +457,296 @@ function setupSearch() {
     }
 
     const input = box.querySelector("input")
-    const mobileIcon = document.querySelector(".header-icon .fa-magnifying-glass")
-    const list = document.createElement("div")
-    list.className = "suggest"
-    box.appendChild(list)
+    const icon = box.querySelector("i")
+    const toggle = document.querySelector(".search-toggle")
+    const listId = "search-list"
 
-    function hide() {
-        list.classList.remove("open")
+    input.setAttribute("type", "search")
+    input.setAttribute("name", "q")
+    input.setAttribute("autocomplete", "off")
+    input.setAttribute("inputmode", "search")
+    input.setAttribute("enterkeyhint", "search")
+    input.setAttribute("aria-label", "Поиск товаров")
+    input.setAttribute("placeholder", "Поиск товаров, например T-shirt…")
+    input.setAttribute("role", "combobox")
+    input.setAttribute("aria-autocomplete", "list")
+    input.setAttribute("aria-expanded", "false")
+    input.setAttribute("aria-controls", listId)
+    input.spellcheck = false
+
+    if (icon) {
+        icon.setAttribute("aria-hidden", "true")
     }
 
-    async function show() {
-        const text = input.value.trim().toLowerCase()
+    const key = document.createElement("kbd")
+    key.className = "search-key"
+    key.setAttribute("aria-hidden", "true")
+    key.textContent = "/"
+
+    const clearBtn = document.createElement("button")
+    clearBtn.type = "button"
+    clearBtn.className = "search-clear"
+    clearBtn.setAttribute("aria-label", "Очистить поиск")
+    clearBtn.innerHTML = `<i class="fa-solid fa-circle-xmark" aria-hidden="true"></i>`
+
+    const list = document.createElement("div")
+    list.className = "suggest"
+    list.id = listId
+    list.setAttribute("role", "listbox")
+    list.setAttribute("aria-label", "Результаты поиска")
+
+    const status = document.createElement("div")
+    status.className = "sr-only"
+    status.setAttribute("aria-live", "polite")
+
+    box.appendChild(key)
+    box.appendChild(clearBtn)
+    box.appendChild(list)
+    box.appendChild(status)
+
+    let activeIndex = -1
+
+    function options() {
+        return list.querySelectorAll('[role="option"]')
+    }
+
+    function closeList() {
+        list.classList.remove("open")
+        input.setAttribute("aria-expanded", "false")
+        input.removeAttribute("aria-activedescendant")
+        activeIndex = -1
+    }
+
+    function openList() {
+        list.classList.add("open")
+        input.setAttribute("aria-expanded", "true")
+    }
+
+    function setActive(index) {
+        const items = options()
+        items.forEach(item => {
+            item.classList.remove("active")
+            item.setAttribute("aria-selected", "false")
+        })
+        activeIndex = index
+        if (index >= 0 && items[index]) {
+            items[index].classList.add("active")
+            items[index].setAttribute("aria-selected", "true")
+            input.setAttribute("aria-activedescendant", items[index].id)
+            items[index].scrollIntoView({ block: "nearest" })
+        }
+        else {
+            input.removeAttribute("aria-activedescendant")
+        }
+    }
+
+    function showPopular() {
+        let html = `<div class="suggest-head">Популярное</div><div class="suggest-tags">`
+        popularQueries.forEach((word, index) => {
+            html += `<a class="suggest-tag" role="option" aria-selected="false" tabindex="-1" id="search-opt-${index}" href="./category.html?search=${encodeURIComponent(word)}">${searchEscape(word)}</a>`
+        });
+        html += `</div>`
+        list.innerHTML = html
+        status.textContent = ""
+        activeIndex = -1
+        openList()
+    }
+
+    function showLoading() {
+        list.innerHTML = `<div class="suggest-empty">Загрузка…</div>`
+        openList()
+    }
+
+    async function update() {
+        const text = input.value.trim()
+
+        if (input.value !== "") {
+            box.classList.add("has-text")
+        }
+        else {
+            box.classList.remove("has-text")
+        }
+
         if (text === "") {
-            hide()
+            if (document.activeElement === input) {
+                showPopular()
+            }
+            else {
+                closeList()
+            }
             return
         }
 
+        if (suggestProducts === null) {
+            showLoading()
+        }
+
         const products = await loadSuggestProducts()
-        const found = products.filter(e => String(e.title).toLowerCase().includes(text)).slice(0, 5)
+        if (input.value.trim() !== text) {
+            return
+        }
+
+        const words = searchWords(text)
+        const found = findProducts(products, words)
+        const shown = found.slice(0, 6)
+
+        if (found.length === 0) {
+            list.innerHTML = `<div class="suggest-empty"><b>Ничего не найдено</b><span>Проверьте запрос или откройте каталог: <a href="./category.html">все товары</a></span></div>`
+            status.textContent = "Ничего не найдено"
+            activeIndex = -1
+            openList()
+            return
+        }
 
         let html = ""
-        if (found.length === 0) {
-            html = `<div class="suggest-empty">Ничего не найдено</div>`
-        }
-        found.forEach(e => {
-            html += `<a class="suggest-item" href="./detail.html?id=${e.id}">
-                        <img src="${e.imageUrl}">
-                        <span class="suggest-title">${e.title}</span>
-                        <b>$${e.currentPrice}</b>
+        shown.forEach((product, index) => {
+            let oldPrice = ""
+            if (product.oldPrice !== null && product.oldPrice !== undefined) {
+                oldPrice = `<s>${searchMoney.format(Number(product.oldPrice))}</s>`
+            }
+            html += `<a class="suggest-item" role="option" aria-selected="false" tabindex="-1" id="search-opt-${index}" href="./detail.html?id=${product.id}">
+                        <img src="${searchEscape(product.imageUrl)}" alt="" width="44" height="44" loading="lazy">
+                        <span class="suggest-text">
+                            <span class="suggest-title">${searchHighlight(product.title, words)}</span>
+                            <span class="suggest-price"><b>${searchMoney.format(Number(product.currentPrice))}</b>${oldPrice}</span>
+                        </span>
                     </a>`
         });
-        if (found.length > 0) {
-            html += `<a class="suggest-all" href="./category.html?search=${encodeURIComponent(input.value.trim())}">Показать все результаты</a>`
-        }
+        html += `<a class="suggest-all" role="option" aria-selected="false" tabindex="-1" id="search-opt-${shown.length}" href="./category.html?search=${encodeURIComponent(input.value.trim())}">Показать все результаты (${found.length})</a>`
+        html += `<div class="suggest-hint" aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> выбор · <kbd>Enter</kbd>&nbsp;открыть · <kbd>Esc</kbd>&nbsp;закрыть</div>`
 
         list.innerHTML = html
-        list.classList.add("open")
+        status.textContent = `Найдено ${found.length} ${searchPlural(found.length, ["товар", "товара", "товаров"])}`
+        activeIndex = -1
+        openList()
     }
 
-    input.addEventListener('input', show)
-    input.addEventListener('focus', show)
+    input.addEventListener('input', update)
+    input.addEventListener('focus', update)
+
     input.addEventListener('keydown', (event) => {
-        if (event.key === "Escape") {
-            hide()
+        const items = options()
+
+        if (event.key === "ArrowDown" && items.length > 0) {
+            event.preventDefault()
+            if (!list.classList.contains("open")) {
+                update()
+                return
+            }
+            setActive((activeIndex + 1) % items.length)
+        }
+        if (event.key === "ArrowUp" && items.length > 0) {
+            event.preventDefault()
+            if (activeIndex <= 0) {
+                setActive(items.length - 1)
+            }
+            else {
+                setActive(activeIndex - 1)
+            }
         }
         if (event.key === "Enter") {
+            if (activeIndex >= 0 && items[activeIndex]) {
+                event.preventDefault()
+                window.location.href = items[activeIndex].getAttribute("href")
+                return
+            }
             const text = input.value.trim()
             if (text !== "" && !window.location.pathname.endsWith("category.html")) {
+                event.preventDefault()
                 window.location.href = `./category.html?search=${encodeURIComponent(text)}`
+            }
+            else {
+                closeList()
+            }
+        }
+        if (event.key === "Escape") {
+            if (list.classList.contains("open")) {
+                closeList()
+            }
+            else if (input.value !== "") {
+                input.value = ""
+                input.dispatchEvent(new Event('input'))
+            }
+            else if (box.classList.contains("mobile-open")) {
+                box.classList.remove("mobile-open")
+                if (toggle) {
+                    toggle.setAttribute("aria-expanded", "false")
+                    toggle.focus()
+                }
             }
         }
     })
 
-    if (mobileIcon) {
-        mobileIcon.style.cursor = "pointer"
-        mobileIcon.addEventListener('click', (event) => {
+    list.addEventListener('mousemove', (event) => {
+        const item = event.target.closest('[role="option"]')
+        if (!item) {
+            return
+        }
+        const index = Array.prototype.indexOf.call(options(), item)
+        if (index !== activeIndex) {
+            setActive(index)
+        }
+    })
+
+    clearBtn.addEventListener('click', () => {
+        input.value = ""
+        input.focus()
+        input.dispatchEvent(new Event('input'))
+    })
+
+    box.addEventListener('focusout', (event) => {
+        if (!box.contains(event.relatedTarget)) {
+            closeList()
+        }
+    })
+
+    document.addEventListener('click', (event) => {
+        if (!box.contains(event.target) && !(toggle && toggle.contains(event.target))) {
+            closeList()
+            box.classList.remove("mobile-open")
+            if (toggle) {
+                toggle.setAttribute("aria-expanded", "false")
+            }
+        }
+    })
+
+    if (toggle) {
+        toggle.addEventListener('click', (event) => {
             event.stopPropagation()
             box.classList.toggle("mobile-open")
             if (box.classList.contains("mobile-open")) {
+                toggle.setAttribute("aria-expanded", "true")
                 input.focus()
+            }
+            else {
+                toggle.setAttribute("aria-expanded", "false")
+                closeList()
             }
         })
     }
 
-    document.addEventListener('click', (event) => {
-        if (!box.contains(event.target)) {
-            hide()
-            box.classList.remove("mobile-open")
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey) {
+            return
+        }
+        const active = document.activeElement
+        if (active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA" || active.tagName === "SELECT" || active.isContentEditable)) {
+            return
+        }
+        event.preventDefault()
+        if (window.matchMedia("(max-width: 768px)").matches && toggle) {
+            toggle.click()
+        }
+        else {
+            input.focus()
         }
     })
+
+    setTimeout(() => {
+        if (input.value !== "") {
+            box.classList.add("has-text")
+        }
+    }, 0)
 }
 
 addHeaderHeart()

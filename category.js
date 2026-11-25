@@ -140,7 +140,7 @@ function renderCategory() {
         const title = String(element.title).toLowerCase()
         const price = Number(element.currentPrice)
 
-        if (search !== "" && !title.includes(search)) {
+        if (search !== "" && !searchWords(search).every(word => title.includes(word))) {
             return
         }
         if (activeType !== "" && !title.includes(activeType)) {
@@ -201,6 +201,17 @@ styleRows.forEach(row => {
 })
 
 applyBtn.addEventListener('click', renderCategory)
+
+searchInput.addEventListener('input', () => {
+    const url = new URL(window.location.href)
+    if (searchInput.value.trim() === "") {
+        url.searchParams.delete("search")
+    }
+    else {
+        url.searchParams.set("search", searchInput.value.trim())
+    }
+    history.replaceState(null, "", url)
+})
 applyBtn.addEventListener('click', closeFilter)
 filterBtn.addEventListener('click', openFilter)
 filterClose.addEventListener('click', closeFilter)

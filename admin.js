@@ -49,6 +49,8 @@ const chartNote = document.getElementById("chart-note")
 const metricButtons = document.querySelectorAll("#metric-chips .period-btn")
 const periodButtons = document.querySelectorAll("#period-chips .period-btn")
 const latestOrdersBox = document.getElementById("latest-orders")
+const topProductsBox = document.getElementById("top-products")
+const topPeriod = document.getElementById("top-period")
 const orderChips = document.querySelectorAll("#order-chips .chip")
 const goOrdersBtn = document.getElementById("go-orders-btn")
 
@@ -71,6 +73,8 @@ const formTitle = document.getElementById("form-title")
 const preview = document.getElementById("preview")
 const inputTitle = document.getElementById("p-title")
 const inputImage = document.getElementById("p-image")
+const colorList = document.getElementById("color-list")
+const addColorBtn = document.getElementById("add-color-btn")
 const inputPrice = document.getElementById("p-price")
 const inputOld = document.getElementById("p-old")
 const inputDiscount = document.getElementById("p-discount")
@@ -225,6 +229,7 @@ function loadSettings(saved) {
 
     renderNotifyBtn()
     renderChart()
+    renderTopProducts()
     if (saved.tab === "dashboard-tab" || saved.tab === "orders-tab" || saved.tab === "products-tab") {
         showTab(saved.tab)
     }
@@ -272,6 +277,7 @@ async function fetchOrders() {
 function renderAll() {
     renderStats()
     renderChart()
+    renderTopProducts()
     renderLatest()
     renderChips()
     renderOrders()
@@ -454,9 +460,66 @@ periodButtons.forEach(btn => {
         periodButtons.forEach(b => b.classList.remove("active"))
         btn.classList.add("active")
         renderChart()
+        renderTopProducts()
         saveSettings()
     })
 })
+
+function renderTopProducts() {
+    const from = new Date()
+    from.setDate(from.getDate() - (chartDays - 1))
+    const fromKey = dayKey(from)
+
+    topPeriod.textContent = `за ${chartDays} дней`
+
+    const stats = {}
+    ordersData.forEach(order => {
+        if (order.status === "canceled") {
+            return
+        }
+        if (orderDay(order) < fromKey) {
+            return
+        }
+        const items = order.items || []
+        items.forEach(item => {
+            const key = String(item.productId)
+            const qty = Number(item.quantity || 1)
+            if (!stats[key]) {
+                stats[key] = { title: item.title, imageUrl: item.imageUrl, qty: 0, sum: 0 }
+            }
+            stats[key].qty += qty
+            stats[key].sum += Number(item.price) * qty
+        });
+    });
+
+    let list = []
+    for (const key in stats) {
+        list.push(stats[key])
+    }
+    list.sort((a, b) => b.qty - a.qty)
+    list = list.slice(0, 5)
+
+    if (list.length === 0) {
+        topProductsBox.innerHTML = `<p class="empty">За этот период продаж нет</p>`
+        return
+    }
+
+    const maxQty = list[0].qty
+    let html = ""
+    list.forEach((item, index) => {
+        const width = Math.round(item.qty / maxQty * 100)
+        html += `<div class="top-row">
+                <span class="top-rank">${index + 1}</span>
+                <img src="${safe(item.imageUrl)}" alt="">
+                <div class="top-info">
+                    <div class="top-title">${safe(item.title)}</div>
+                    <div class="progress-track"><div class="progress-fill" style="width: ${width}%"></div></div>
+                </div>
+                <div class="top-qty">${item.qty} шт.<span>${money(item.sum)}</span></div>
+            </div>`
+    });
+    topProductsBox.innerHTML = html
+}
 
 function renderLatest() {
     if (ordersData.length === 0) {
@@ -898,6 +961,15 @@ productsList.addEventListener('click', async (event) => {
         editId = product.id
         inputTitle.value = product.title
         inputImage.value = product.imageUrl
+        colorList.innerHTML = ""
+        if (Array.isArray(product.colors) && product.colors.length > 0) {
+            product.colors.forEach(item => addColorRow(item.name, item.hex, item.image))
+        }
+        else if (product.colorImages) {
+            addColorRow("Olive", "#4F4E44", "")
+            addColorRow("Green", "#314F4A", product.colorImages[0] || "")
+            addColorRow("Navy", "#31344F", product.colorImages[1] || "")
+        }
         inputPrice.value = product.currentPrice
         inputOld.value = ""
         if (product.oldPrice !== null && product.oldPrice !== undefined) {
@@ -962,6 +1034,81 @@ productChips.forEach(chip => {
     })
 })
 
+function addColorRow(name, hex, image) {
+    const row = document.createElement("div")
+    row.className = "color-row"
+
+    let value = "#000000"
+    if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
+        value = hex
+    }
+
+    const picker = document.createElement("input")
+    picker.type = "color"
+    picker.className = "color-hex"
+    picker.value = value
+    picker.title = "Цвет"
+
+    const nameInput = document.createElement("input")
+    nameInput.type = "text"
+    nameInput.className = "field color-name-input"
+    nameInput.placeholder = "Название цвета, например Natural Titanium"
+    nameInput.value = name || ""
+    nameInput.addEventListener('input', () => nameInput.classList.remove("invalid"))
+
+    const removeBtn = document.createElement("button")
+    removeBtn.type = "button"
+    removeBtn.className = "icon-btn red color-remove"
+    removeBtn.title = "Убрать цвет"
+    removeBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`
+    removeBtn.addEventListener('click', () => row.remove())
+
+    const imageInput = document.createElement("input")
+    imageInput.type = "text"
+    imageInput.className = "field color-image-input"
+    imageInput.placeholder = "Ссылка на фото этого цвета (необязательно)"
+    imageInput.value = image || ""
+
+    row.appendChild(picker)
+    row.appendChild(nameInput)
+    row.appendChild(removeBtn)
+    row.appendChild(imageInput)
+    colorList.appendChild(row)
+}
+
+function readColors() {
+    const colors = []
+    const names = []
+    const rows = colorList.querySelectorAll(".color-row")
+
+    for (let i = 0; i < rows.length; i++) {
+        const nameInput = rows[i].querySelector(".color-name-input")
+        const name = nameInput.value.trim()
+
+        if (name === "") {
+            nameInput.classList.add("invalid")
+            showToast("Укажите название у каждого цвета", true)
+            return null
+        }
+        if (names.includes(name.toLowerCase())) {
+            nameInput.classList.add("invalid")
+            showToast(`Цвет «${name}» уже есть, каждый цвет указывается один раз`, true)
+            return null
+        }
+
+        names.push(name.toLowerCase())
+        colors.push({
+            name: name,
+            hex: rows[i].querySelector(".color-hex").value,
+            image: rows[i].querySelector(".color-image-input").value.trim()
+        })
+    }
+
+    return colors
+}
+
+addColorBtn.addEventListener('click', () => addColorRow("", "#000000", ""))
+
 function openEditor() {
     productEditor.classList.add("open")
     editorBackdrop.classList.add("open")
@@ -979,6 +1126,7 @@ function resetForm() {
     editId = null
     inputTitle.value = ""
     inputImage.value = ""
+    colorList.innerHTML = ""
     inputPrice.value = ""
     inputOld.value = ""
     inputDiscount.value = ""
@@ -1033,9 +1181,15 @@ saveProductBtn.addEventListener('click', async () => {
         costPrice = Number(inputCost.value)
     }
 
+    const colors = readColors()
+    if (colors === null) {
+        return
+    }
+
     const product = {
         title: title,
         imageUrl: image,
+        colors: colors,
         currentPrice: pricing.price,
         oldPrice: pricing.oldPrice,
         discount: pricing.discount,
@@ -1336,7 +1490,7 @@ function marginLine(product) {
 }
 
 function describeChanges(before, after) {
-    const names = { title: "название", imageUrl: "картинка", currentPrice: "цена", oldPrice: "старая цена", discount: "скидка", rating: "рейтинг", category: "раздел", description: "описание", costPrice: "закупка" }
+    const names = { title: "название", imageUrl: "картинка", colors: "цвета", currentPrice: "цена", oldPrice: "старая цена", discount: "скидка", rating: "рейтинг", category: "раздел", description: "описание", costPrice: "закупка" }
     const parts = []
     for (const key in names) {
         if (!(key in after)) {
@@ -1350,10 +1504,14 @@ function describeChanges(before, after) {
         if (after[key] !== undefined && after[key] !== null) {
             newValue = String(after[key])
         }
+        if (key === "colors") {
+            oldValue = JSON.stringify(before[key] || [])
+            newValue = JSON.stringify(after[key] || [])
+        }
         if (oldValue === newValue) {
             continue
         }
-        if (key === "description" || key === "imageUrl") {
+        if (key === "description" || key === "imageUrl" || key === "colors") {
             parts.push(`${names[key]} изменено`)
         }
         else {

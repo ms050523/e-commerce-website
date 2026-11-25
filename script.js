@@ -96,3 +96,18 @@ if (userIcon && headerIcons && typeof getSession === "function") {
         }
     });
 }
+
+const promoBanner = document.querySelector(".promo-banner");
+const promoClose = document.querySelector(".promo-close");
+
+if (promoBanner && sessionStorage.getItem("promoClosed") === "1") {
+    promoBanner.remove();
+}
+
+if (promoBanner && promoClose) {
+    promoClose.addEventListener("click", () => {
+        sessionStorage.setItem("promoClosed", "1");
+        promoBanner.classList.add("closing");
+        setTimeout(() => promoBanner.remove(), 200);
+    });
+}
