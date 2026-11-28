@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +12,8 @@
 </head>
 <body>
     <div class="promo-banner ">
-        <p>Sign up and get 20% off to your first order.
-            <a href="#">Sign Up Now</a>
+        <p>Зарегистрируйтесь и получите скидку 20% на первый заказ.
+            <a href="#">Зарегистрироваться</a>
         </p>
         <button type="button" class="promo-close" aria-label="Закрыть баннер"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     </div>
@@ -24,24 +24,24 @@
         <div class="logo">SHOP.CO</div>
         <ul id="ul">
             <li class="has-drop">
-                <a>Shop</a>
+                <a>Магазин</a>
                 <button type="button" class="arrow-btn">
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
             </li>
-            <li>On Sale</li>
-            <li>New Arrivals</li>
-            <li>Brands</li>
+            <li>Скидки</li>
+            <li>Новинки</li>
+            <li>Бренды</li>
         </ul>
         <ul class="drop-box">
-            <li><a href="./index.html">Home</a></li>
-            <li><a href="./category.html">Casual</a></li>
-            <li><a href="./cart.html">Cart</a></li>
+            <li><a href="./index.html">Главная</a></li>
+            <li><a href="./category.html">Каталог</a></li>
+            <li><a href="./cart.html">Корзина</a></li>
         </ul>
         <div class="header-tools">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-                <input type="search" name="q" autocomplete="off" inputmode="search" enterkeyhint="search" aria-label="Поиск товаров" placeholder="Поиск товаров, например T-shirt…">
+                <input type="search" name="q" autocomplete="off" inputmode="search" enterkeyhint="search" aria-label="Поиск товаров" placeholder="Поиск товаров, например футболка…">
             </div>
             <div class="header-icon">
                 <button type="button" class="search-toggle" aria-label="Открыть поиск" aria-expanded="false"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
@@ -52,7 +52,7 @@
     </header>
     <div class="box">
         <div class="filter-bar">
-            <h2 class="filter-title">Casual</h2>
+            <h2 class="filter-title">Каталог</h2>
             <button type="button" class="filter-btn" id="filter-btn" aria-label="Фильтры" aria-expanded="false">
                 <i class="fa-solid fa-sliders"></i>
                 <span class="filter-dot" id="filter-dot"></span>
@@ -61,18 +61,18 @@
         <div class="filter-backdrop" id="filter-backdrop"></div>
         <div class="sidebar">
             <div class="header">
-                <h2>Filters</h2>
+                <h2>Фильтры</h2>
                 <button type="button" class="filter-close" id="filter-close" aria-label="Закрыть"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="block">
-                <div class="row">T-shirts</div>
-                <div class="row">Shorts</div>
-                <div class="row">Shirts</div>
-                <div class="row">Hoodie</div>
-                <div class="row">Jeans</div>
+                <div class="row" data-word="t-shirt|футболк">Футболки</div>
+                <div class="row" data-word="shorts|шорт">Шорты</div>
+                <div class="row" data-word="shirt|рубашк">Рубашки</div>
+                <div class="row" data-word="hoodie|худи">Худи</div>
+                <div class="row" data-word="jeans|джинс">Джинсы</div>
             </div>
             <div class="block">
-                <div class="title">Price</div>
+                <div class="title">Цена</div>
                 <div class="price-box">
                     <div class="line">
                         <div class="progress"></div>
@@ -80,13 +80,13 @@
                         <div class="circle circle-right"></div>
                     </div>
                     <div class="values">
-                        <span>$50</span>
-                        <span>$200</span>
+                        <span>0 ₽</span>
+                        <span>20 000 ₽</span>
                     </div>
                 </div>
             </div>
             <div class="block">
-                <div class="title">Colors</div>
+                <div class="title">Цвета</div>
                 <div class="color-grid">
                     <div class="color-item" style="background-color: #00c12b;"></div>
                     <div class="color-item" style="background-color: #f5222d;"></div>
@@ -102,41 +102,41 @@
             </div>
             <div class="block">
                 <div class="size-list">
-                    <span class="size-item">XX-Small</span>
-                    <span class="size-item">X-Small</span>
-                    <span class="size-item">Small</span>
-                    <span class="size-item">Medium</span>
-                    <span class="size-item active">Large</span>
-                    <span class="size-item">X-Large</span>
-                    <span class="size-item">XX-Large</span>
-                    <span class="size-item">3X-Large</span>
-                    <span class="size-item">4X-Large</span>
+                    <span class="size-item">XXS</span>
+                    <span class="size-item">XS</span>
+                    <span class="size-item">S</span>
+                    <span class="size-item">M</span>
+                    <span class="size-item active">L</span>
+                    <span class="size-item">XL</span>
+                    <span class="size-item">XXL</span>
+                    <span class="size-item">3XL</span>
+                    <span class="size-item">4XL</span>
                 </div>
             </div>
             <div class="block last-block">
-                <div class="title">Dress Style</div>
-                <div class="row">Casual</div>
-                <div class="row">Formal</div>
-                <div class="row">Party</div>
-                <div class="row">Gym</div>
+                <div class="title">Стиль одежды</div>
+                <div class="row">Повседневный</div>
+                <div class="row">Деловой</div>
+                <div class="row">Вечерний</div>
+                <div class="row">Спортивный</div>
             </div>
-            <button class="btn">Apply Filter</button>
+            <button class="btn">Применить</button>
         </div>
         <div class="product-row" id="category-row"></div>
     </div>
     <footer class="footer">
         <div class="banner">
-            <h2 class="banner-h2">STAY UPTO DATE ABOUT OUR LATEST OFFERS</h2>
+            <h2 class="banner-h2">БУДЬТЕ В КУРСЕ НАШИХ НОВИНОК И АКЦИЙ</h2>
             <form class="banner-form">
                 <i class="fa-regular fa-envelope"></i>
-                <input type="email" placeholder="Enter your email address">
-                <button type="submit">Subscribe to Newsletter</button>
+                <input type="email" placeholder="Ваш email, например name@mail.ru…">
+                <button type="submit">Подписаться на рассылку</button>
             </form>
         </div>
         <div class="footer-content">
             <div class="footer-column company-info">
                 <h3>SHOP.CO</h3>
-                <p>We have clothes that suits your style and which you’re proud to wear. From women to men.</p>
+                <p>Мы создаём одежду, которая подчёркивает ваш стиль и которой вы будете гордиться. Для женщин и мужчин.</p>
                 <div class="social-icons">
                     <i class="fa-brands fa-square-twitter"></i>
                     <i class="fa-brands fa-facebook"></i>
@@ -145,44 +145,44 @@
                 </div>
             </div>
             <div class="footer-column">
-                <h3>Company</h3>
+                <h3>Компания</h3>
                 <ul>
-                    <li>About</li>
-                    <li>Features</li>
-                    <li>Works</li>
-                    <li>Career</li>
+                    <li>О нас</li>
+                    <li>Возможности</li>
+                    <li>Как это работает</li>
+                    <li>Карьера</li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h3>Help</h3>
+                <h3>Помощь</h3>
                 <ul>
-                    <li>Customer Support</li>
-                    <li>Delivery Details</li>
-                    <li>Terms & Conditions</li>
-                    <li>Privacy Policy</li>
+                    <li>Поддержка клиентов</li>
+                    <li>Условия доставки</li>
+                    <li>Условия использования</li>
+                    <li>Политика конфиденциальности</li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h3>FAQ</h3>
+                <h3>Вопросы</h3>
                 <ul>
-                    <li>Account</li>
-                    <li>Manage Deliveries</li>
-                    <li>Orders</li>
-                    <li>Payments</li>
+                    <li>Аккаунт</li>
+                    <li>Управление доставкой</li>
+                    <li>Заказы</li>
+                    <li>Оплата</li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h3>Resources</h3>
+                <h3>Ресурсы</h3>
                 <ul>
-                    <li>Free eBooks</li>
-                    <li>Development Tutorial</li>
-                    <li>How to - Blog</li>
-                    <li>Youtube Playlist</li>
+                    <li>Бесплатные книги</li>
+                    <li>Руководство по разработке</li>
+                    <li>Блог</li>
+                    <li>Плейлист на YouTube</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Shop.co © 2000-2023, All Rights Reserved</p>
+            <p>Shop.co © 2000–2026. Все права защищены</p>
             <div class="icons">
                 <i class="fa-brands fa-cc-visa"></i>
                 <i class="fa-brands fa-cc-mastercard"></i>

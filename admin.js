@@ -15,8 +15,8 @@ const paymentNames = {
 }
 
 const categoryNames = {
-    "new-arrivals": "New Arrivals",
-    "top-selling": "Top Selling"
+    "new-arrivals": "Новинки",
+    "top-selling": "Хиты продаж"
 }
 
 const placeholder = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='295' height='298'><rect width='100%25' height='100%25' fill='%23e4e4e4'/></svg>"
@@ -119,7 +119,7 @@ function safe(text) {
 }
 
 function money(number) {
-    return `$${(Math.round(Number(number) * 100) / 100).toLocaleString("en-US")}`
+    return formatPrice(number)
 }
 
 function showToast(text, isError) {
@@ -325,12 +325,12 @@ function renderStats() {
         statNewBtn.classList.add("has-new")
         navNew.textContent = countNew
         navNew.style.display = "inline-block"
-        document.title = `(${countNew}) SHOP.CO Admin`
+        document.title = `(${countNew}) SHOP.CO | Админка`
     }
     else {
         statNewBtn.classList.remove("has-new")
         navNew.style.display = "none"
-        document.title = "SHOP.CO Admin"
+        document.title = "SHOP.CO | Админка"
     }
 }
 
@@ -874,7 +874,7 @@ function renderPreview() {
 
     let oldHtml = ""
     if (pricing.oldPrice !== null) {
-        oldHtml = `<s>$${pricing.oldPrice}</s>`
+        oldHtml = `<s>${formatPrice(pricing.oldPrice)}</s>`
     }
     let discountHtml = ""
     if (pricing.discount !== null) {
@@ -885,7 +885,7 @@ function renderPreview() {
         <div class="pv-info">
             <h3>${title}</h3>
             <div class="pv-stars">${starsHtml(rating)}<span>${rating}</span></div>
-            <div class="pv-price"><b>$${pricing.price || 0}</b>${oldHtml}${discountHtml}</div>
+            <div class="pv-price"><b>${formatPrice(pricing.price || 0)}</b>${oldHtml}${discountHtml}</div>
         </div>
         <p class="pv-note">Так карточка выглядит в магазине. Любая картинка подгоняется под одинаковый размер</p>`
 }
@@ -915,7 +915,7 @@ function renderProducts() {
 
         let oldPrice = ""
         if (product.oldPrice !== null && product.oldPrice !== undefined) {
-            oldPrice = `<s>$${Number(product.oldPrice)}</s>`
+            oldPrice = `<s>${formatPrice(product.oldPrice)}</s>`
         }
         let discount = ""
         if (product.discount !== null && product.discount !== undefined) {
@@ -938,9 +938,9 @@ function renderProducts() {
                 <img class="p-thumb" src="${safe(product.imageUrl)}" alt="" loading="lazy">
                 <div class="p-main">
                     <h4>${safe(product.title)}</h4>
-                    <p class="p-meta">${categoryNames[product.category] || "Top Selling"}, рейтинг ${Number(product.rating)}</p>
+                    <p class="p-meta">${categoryNames[product.category] || "Хиты продаж"}, рейтинг ${Number(product.rating)}</p>
                 </div>
-                <div class="p-price"><b>$${Number(product.currentPrice)}</b>${oldPrice}${discount}</div>
+                <div class="p-price"><b>${formatPrice(product.currentPrice)}</b>${oldPrice}${discount}</div>
                 <div class="p-margin-cell">${marginLine(product)}</div>
                 <div class="p-actions">
                     <button type="button" class="icon-btn edit-product" data-id="${product.id}" title="Изменить"><i class="fa-solid fa-pen"></i></button>
@@ -975,9 +975,9 @@ productsList.addEventListener('click', async (event) => {
             product.colors.forEach(item => addColorRow(item.name, item.hex, item.image))
         }
         else if (product.colorImages) {
-            addColorRow("Olive", "#4F4E44", "")
-            addColorRow("Green", "#314F4A", product.colorImages[0] || "")
-            addColorRow("Navy", "#31344F", product.colorImages[1] || "")
+            addColorRow("Оливковый", "#4F4E44", "")
+            addColorRow("Зелёный", "#314F4A", product.colorImages[0] || "")
+            addColorRow("Тёмно-синий", "#31344F", product.colorImages[1] || "")
         }
         inputPrice.value = product.currentPrice
         inputOld.value = ""
@@ -1357,6 +1357,66 @@ bulkButtons.forEach(btn => {
             return
         }
 
+        if (type === "reviews") {
+            let reviews = []
+            try {
+                const response = await axios.get(`${BASE_URL}/reviews`)
+                reviews = response.data
+            } catch (error) {
+                console.log("Ошибка: ", error);
+                showToast("Не удалось загрузить отзывы", true)
+                return
+            }
+
+            const patches = []
+            targets.forEach(product => {
+                const own = reviews.filter(e => String(e.productId) === String(product.id))
+                if (own.length === 0) {
+                    return
+                }
+                let sum = 0
+                own.forEach(e => {
+                    sum += Number(e.rating)
+                });
+                patches.push({ id: product.id, data: { rating: Math.round(sum / own.length * 10) / 10, reviewsCount: own.length } })
+            });
+
+            if (patches.length === 0) {
+                showToast("У выбранных товаров нет отзывов", true)
+                return
+            }
+            await applyPatches(patches, "Рейтинг пересчитан по отзывам")
+            return
+        }
+
+        if (type === "rate") {
+            const answer = prompt("Курс: сколько рублей в одном долларе (например, 90):")
+            if (answer === null) {
+                return
+            }
+            const rate = Number(String(answer).replace(",", "."))
+            if (!(rate > 0)) {
+                showToast("Введите курс числом, например 90", true)
+                return
+            }
+            const ok = confirm(`Умножить цены выбранных товаров (${targets.length}) на ${rate}? Повторный пересчёт увеличит цены ещё раз`)
+            if (!ok) {
+                return
+            }
+            const patches = targets.map(product => {
+                const data = { currentPrice: roundPrice(product.currentPrice * rate) }
+                if (product.oldPrice !== null && product.oldPrice !== undefined) {
+                    data.oldPrice = roundPrice(product.oldPrice * rate)
+                }
+                if (product.costPrice !== null && product.costPrice !== undefined && product.costPrice !== "") {
+                    data.costPrice = roundPrice(product.costPrice * rate)
+                }
+                return { id: product.id, data: data }
+            });
+            await applyPatches(patches, `Цены пересчитаны по курсу ${rate}`)
+            return
+        }
+
         if (type === "discount") {
             const value = Number(prompt("Скидка в процентах (от 1 до 90):"))
             if (!(value >= 1 && value <= 90)) {
@@ -1398,6 +1458,10 @@ bulkButtons.forEach(btn => {
         await applyPatches(patches, `Перенос в раздел ${categoryNames[type]}`)
     })
 })
+
+function roundPrice(value) {
+    return Math.round(Number(value) / 10) * 10
+}
 
 function productCost(productId) {
     const product = productsData.find(e => String(e.id) === String(productId))

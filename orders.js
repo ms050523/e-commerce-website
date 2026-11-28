@@ -93,15 +93,15 @@ function renderOrders() {
                         <img src="${esc(item.imageUrl)}">
                         <div class="ord-item-info">
                             <a href="./detail.html?id=${esc(item.productId)}">${esc(item.title)}</a>
-                            <p class="ord-item-sub">Size: ${esc(item.size)} · Color: ${esc(item.color)} · ${qty} × $${price}</p>
+                            <p class="ord-item-sub">Размер: ${esc(item.size)} · Цвет: ${esc(item.color)} · ${qty} × ${formatPrice(price)}</p>
                         </div>
-                        <div class="ord-item-sum">$${Math.round(price * qty * 100) / 100}</div>
+                        <div class="ord-item-sum">${formatPrice(price * qty)}</div>
                     </div>`
         });
 
         let discountLine = ""
         if (Number(order.discount) > 0) {
-            discountLine = `<div class="ord-line"><span>Скидка</span><span>-$${order.discount}</span></div>`
+            discountLine = `<div class="ord-line"><span>Скидка</span><span>-${formatPrice(order.discount)}</span></div>`
         }
 
         let paymentLine = ""
@@ -132,10 +132,10 @@ function renderOrders() {
                             ${cancelBtn}
                         </div>
                         <div class="ord-sums">
-                            <div class="ord-line"><span>Товары</span><span>$${order.subtotal}</span></div>
+                            <div class="ord-line"><span>Товары</span><span>${formatPrice(order.subtotal)}</span></div>
                             ${discountLine}
-                            <div class="ord-line"><span>Доставка</span><span>$${order.delivery}</span></div>
-                            <div class="ord-line ord-total"><span>Итого</span><span>$${order.total}</span></div>
+                            <div class="ord-line"><span>Доставка</span><span>${formatPrice(order.delivery)}</span></div>
+                            <div class="ord-line ord-total"><span>Итого</span><span>${formatPrice(order.total)}</span></div>
                         </div>
                     </div>
                 </div>`

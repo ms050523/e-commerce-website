@@ -19,7 +19,7 @@ const filterBackdrop = document.getElementById("filter-backdrop")
 const filterDot = document.getElementById("filter-dot")
 
 let allProducts = []
-let maxPrice = 200
+let maxPrice = 20000
 let leftPercent = 0
 let rightPercent = 100
 let activeType = ""
@@ -56,8 +56,8 @@ function renderSlider() {
     circleRight.style.right = `${100 - rightPercent}%`
     progress.style.left = `${leftPercent}%`
     progress.style.right = `${100 - rightPercent}%`
-    priceValues[0].textContent = `$${percentToPrice(leftPercent)}`
-    priceValues[1].textContent = `$${percentToPrice(rightPercent)}`
+    priceValues[0].textContent = formatPrice(percentToPrice(leftPercent))
+    priceValues[1].textContent = formatPrice(percentToPrice(rightPercent))
 }
 
 function startDrag(circle, side) {
@@ -140,10 +140,10 @@ function renderCategory() {
         const title = String(element.title).toLowerCase()
         const price = Number(element.currentPrice)
 
-        if (search !== "" && !searchWords(search).every(word => title.includes(word))) {
+        if (search !== "" && searchScore(element, searchWords(search)) < 0) {
             return
         }
-        if (activeType !== "" && !title.includes(activeType)) {
+        if (activeType !== "" && !activeType.split("|").some(word => title.includes(word))) {
             return
         }
         if (price < minPrice || price > maxFilter) {
@@ -164,7 +164,7 @@ function renderCategory() {
 
 typeRows.forEach(row => {
     row.addEventListener('click', () => {
-        const word = row.textContent.trim().toLowerCase().replace(/s$/, "")
+        const word = row.dataset.word || row.textContent.trim().toLowerCase()
         const wasActive = row.classList.contains("active")
 
         typeRows.forEach(r => r.classList.remove("active"))

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHOP.CO Admin</title>
+    <title>SHOP.CO | Админка</title>
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
         integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg=="
@@ -46,17 +46,17 @@
                         </button>
                         <div class="stat">
                             <span class="stat-label">Выручка</span>
-                            <b class="stat-value" id="dash-revenue">$0</b>
+                            <b class="stat-value" id="dash-revenue">0 ₽</b>
                             <span class="stat-hint">по выполненным заказам</span>
                         </div>
                         <div class="stat">
                             <span class="stat-label">Средний чек</span>
-                            <b class="stat-value" id="dash-avg">$0</b>
+                            <b class="stat-value" id="dash-avg">0 ₽</b>
                             <span class="stat-hint">без отменённых</span>
                         </div>
                         <div class="stat">
                             <span class="stat-label">Прибыль</span>
-                            <b class="stat-value" id="dash-profit">$0</b>
+                            <b class="stat-value" id="dash-profit">0 ₽</b>
                             <span class="stat-hint" id="profit-note"></span>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                         <div class="panel-head">
                             <div>
                                 <p class="panel-title" id="chart-title">Продажи за 7 дней</p>
-                                <h2 class="big-number" id="chart-total">$0</h2>
+                                <h2 class="big-number" id="chart-total">0 ₽</h2>
                             </div>
                             <div class="panel-tools">
                                 <div class="period" id="metric-chips">
@@ -136,16 +136,18 @@
                     <div class="panel table-panel">
                         <div class="tabs-line" id="product-chips">
                             <button type="button" class="chip active" data-cat="all">Все</button>
-                            <button type="button" class="chip" data-cat="new-arrivals">New Arrivals</button>
-                            <button type="button" class="chip" data-cat="top-selling">Top Selling</button>
+                            <button type="button" class="chip" data-cat="new-arrivals">Новинки</button>
+                            <button type="button" class="chip" data-cat="top-selling">Хиты продаж</button>
                         </div>
                         <div class="bulk" id="bulk-bar">
                             <label class="bulk-all"><input type="checkbox" id="bulk-all"> Выбрать все</label>
                             <span class="bulk-count" id="bulk-count">Выбрано: 0</span>
                             <button type="button" class="mini" data-bulk="discount">Скидка %</button>
+                            <button type="button" class="mini" data-bulk="rate">Пересчитать по курсу</button>
+                            <button type="button" class="mini" data-bulk="reviews">Рейтинг по отзывам</button>
                             <button type="button" class="mini" data-bulk="nodiscount">Снять скидку</button>
-                            <button type="button" class="mini" data-bulk="new-arrivals">В New Arrivals</button>
-                            <button type="button" class="mini" data-bulk="top-selling">В Top Selling</button>
+                            <button type="button" class="mini" data-bulk="new-arrivals">В новинки</button>
+                            <button type="button" class="mini" data-bulk="top-selling">В хиты продаж</button>
                             <button type="button" class="mini danger" data-bulk="delete">Удалить</button>
                         </div>
                         <div id="products-list" class="p-table"></div>
@@ -165,10 +167,10 @@
         <div class="pv" id="preview"></div>
         <div class="editor-fields">
             <label class="wide">Название
-                <input type="text" id="p-title" class="field" placeholder="Gradient Graphic T-shirt">
+                <input type="text" id="p-title" class="field" placeholder="Футболка с градиентным принтом">
             </label>
             <label class="wide">Ссылка на картинку
-                <input type="text" id="p-image" class="field" placeholder="./images/... или https://...">
+                <input type="text" id="p-image" class="field" placeholder="./images/futbolka.png или https://…">
             </label>
             <div class="wide color-box">
                 <p class="color-title">Цвета товара</p>
@@ -176,10 +178,10 @@
                 <div id="color-list" class="color-list"></div>
                 <button type="button" class="mini" id="add-color-btn"><i class="fa-solid fa-plus"></i> Добавить цвет</button>
             </div>
-            <label>Цена, $
+            <label>Цена, ₽
                 <input type="number" id="p-price" class="field" placeholder="145" min="0">
             </label>
-            <label>Старая цена, $
+            <label>Старая цена, ₽
                 <input type="number" id="p-old" class="field" placeholder="180" min="0">
             </label>
             <label>Скидка, %
@@ -188,14 +190,14 @@
             <label>Рейтинг
                 <input type="number" id="p-rating" class="field" placeholder="4.5" min="0" max="5" step="0.5">
             </label>
-            <label class="wide">Закупочная цена, $
+            <label class="wide">Закупочная цена, ₽
                 <input type="number" id="p-cost" class="field" placeholder="90" min="0">
                 <span class="margin-note" id="margin-note"></span>
             </label>
             <label class="wide">Раздел
                 <select id="p-category" class="field">
-                    <option value="new-arrivals">New Arrivals</option>
-                    <option value="top-selling">Top Selling</option>
+                    <option value="new-arrivals">Новинки</option>
+                    <option value="top-selling">Хиты продаж</option>
                 </select>
             </label>
             <label class="wide">Описание

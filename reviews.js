@@ -1,5 +1,6 @@
 const API_REVIEWS = `${BASE_URL}/reviews`
 const API_ORDERS_FOR_REVIEWS = `${BASE_URL}/orders`
+const API_PRODUCTS_FOR_REVIEWS = `${BASE_URL}/products`
 
 const reviewsList = document.getElementById("reviews-list")
 const reviewsCount = document.getElementById("reviews-count")
@@ -13,6 +14,9 @@ const reviewCounter = document.getElementById("review-counter")
 const reviewError = document.getElementById("review-error")
 const reviewCancel = document.getElementById("review-cancel")
 const reviewSubmit = document.getElementById("review-submit")
+const ratingStars = document.querySelector(".stars")
+const ratingNumber = document.querySelector(".rating-num")
+const ratingCount = document.getElementById("rating-count")
 
 let allReviews = []
 let pickedStars = 0
@@ -39,6 +43,58 @@ function reviewDate(review) {
     return date.toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
 }
 
+function reviewsPlural(number) {
+    const last = number % 10
+    const lastTwo = number % 100
+    if (lastTwo >= 11 && lastTwo <= 14) {
+        return "отзывов"
+    }
+    if (last === 1) {
+        return "отзыв"
+    }
+    if (last >= 2 && last <= 4) {
+        return "отзыва"
+    }
+    return "отзывов"
+}
+
+function averageRating() {
+    let sum = 0
+    allReviews.forEach(review => {
+        sum += Number(review.rating)
+    });
+    return Math.round(sum / allReviews.length * 10) / 10
+}
+
+function showRatingCount() {
+    if (allReviews.length === 0) {
+        ratingCount.textContent = "Отзывов пока нет"
+        return
+    }
+    ratingCount.textContent = `${allReviews.length} ${reviewsPlural(allReviews.length)}`
+}
+
+async function saveAverageRating() {
+    if (allReviews.length === 0) {
+        try {
+            await axios.patch(`${API_PRODUCTS_FOR_REVIEWS}/${productId}`, { reviewsCount: 0 })
+        } catch (error) {
+            console.log("Ошибка: ", error);
+        }
+        return
+    }
+
+    const average = averageRating()
+    ratingStars.innerHTML = starsHtml(average)
+    ratingNumber.textContent = `${average}/5`
+
+    try {
+        await axios.patch(`${API_PRODUCTS_FOR_REVIEWS}/${productId}`, { rating: average, reviewsCount: allReviews.length })
+    } catch (error) {
+        console.log("Рейтинг не сохранён: ", error);
+    }
+}
+
 function loginLink() {
     return `./login.html?next=${encodeURIComponent("detail.html?id=" + productId)}`
 }
@@ -50,6 +106,11 @@ async function fetchReviews() {
             .filter(e => String(e.productId) === String(productId))
             .sort((a, b) => b.id - a.id)
         renderReviews()
+        if (allReviews.length > 0) {
+            const average = averageRating()
+            ratingStars.innerHTML = starsHtml(average)
+            ratingNumber.textContent = `${average}/5`
+        }
     } catch (error) {
         console.log("Ошибка: ", error);
         reviewsList.innerHTML = `<p class="reviews-empty">Не удалось загрузить отзывы</p>`
@@ -58,6 +119,7 @@ async function fetchReviews() {
 
 function renderReviews() {
     reviewsCount.textContent = allReviews.length
+    showRatingCount()
 
     if (allReviews.length === 0) {
         reviewsAvg.innerHTML = ""
@@ -65,11 +127,7 @@ function renderReviews() {
         return
     }
 
-    let sum = 0
-    allReviews.forEach(review => {
-        sum += Number(review.rating)
-    });
-    const average = Math.round(sum / allReviews.length * 10) / 10
+    const average = averageRating()
     reviewsAvg.innerHTML = `${starsHtml(Math.round(average * 2) / 2)}<b>${average}</b><span>из 5</span>`
 
     const session = getSession()
@@ -226,6 +284,7 @@ reviewForm.addEventListener('submit', async (event) => {
         allReviews.unshift(response.data)
         renderReviews()
         resetReviewForm()
+        saveAverageRating()
         showToast("Спасибо! Отзыв опубликован", "success")
         writeLog("review.create", `Товар №${productId}`, `Оценка ${review.rating}`)
     } catch (error) {
@@ -263,6 +322,7 @@ reviewsList.addEventListener('click', async (event) => {
         await axios.delete(`${API_REVIEWS}/${id}`)
         allReviews = allReviews.filter(e => String(e.id) !== String(id))
         renderReviews()
+        saveAverageRating()
         showToast("Отзыв удалён", "success")
         writeLog("review.delete", `Товар №${productId}`, `Отзыв №${id} удалён`)
     } catch (error) {

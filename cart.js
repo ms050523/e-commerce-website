@@ -39,7 +39,7 @@ function getTotals(data) {
 
     let delivery = 0
     if (data.length > 0) {
-        delivery = 15
+        delivery = DELIVERY_FEE
     }
     let total = Math.round((subtotal + delivery) * 100) / 100
 
@@ -53,9 +53,9 @@ function renderSummary(data) {
     const total = totals.total
 
     if (summaryValues.length >= 3) {
-        summaryValues[0].innerHTML = `$${subtotal}`
-        summaryValues[1].innerHTML = `$${delivery}`
-        summaryValues[2].innerHTML = `$${total}`
+        summaryValues[0].innerHTML = formatPrice(subtotal)
+        summaryValues[1].innerHTML = formatPrice(delivery)
+        summaryValues[2].innerHTML = formatPrice(total)
     }
 
     checkoutBtn.disabled = data.length === 0
@@ -77,7 +77,7 @@ function renderBascket(data) {
     let cards = ""
 
     if (data.length === 0) {
-        cards = `<p class="empty">Your cart is empty. <a href="./index.html">Continue shopping</a></p>`
+        cards = `<p class="empty">Ваша корзина пуста. <a href="./index.html">Продолжить покупки</a></p>`
     }
 
     data.forEach(element => {
@@ -93,9 +93,9 @@ function renderBascket(data) {
                         <a href="./detail.html?id=${element.productId}" style="text-decoration: none; color: inherit;">
                             <h3 class="name">${element.title}</h3>
                         </a>
-                        <p class="text">Size: <span>${element.size}</span></p>
-                        <p class="text">Color: <span>${element.color}</span></p>
-                        <p class="price">$${price}</p>
+                        <p class="text">Размер: <span>${element.size}</span></p>
+                        <p class="text">Цвет: <span>${element.color}</span></p>
+                        <p class="price">${formatPrice(price)}</p>
                     </div>
                     <div class="controls">
                         <i class="fa-solid fa-trash-can" data-id="${element.id}"></i>
@@ -251,9 +251,9 @@ function showNotice(iconClass, title, text, buttonText, onButton, laterText) {
 
 function openModal() {
     const totals = getTotals(basketData)
-    document.getElementById("m-subtotal").textContent = `$${totals.subtotal}`
-    document.getElementById("m-delivery").textContent = `$${totals.delivery}`
-    document.getElementById("m-total").textContent = `$${totals.total}`
+    document.getElementById("m-subtotal").textContent = formatPrice(totals.subtotal)
+    document.getElementById("m-delivery").textContent = formatPrice(totals.delivery)
+    document.getElementById("m-total").textContent = formatPrice(totals.total)
 
     const session = getSession()
     if (session !== null) {

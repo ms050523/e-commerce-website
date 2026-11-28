@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHOP .CO</title>
+    <title>SHOP.CO | Товар</title>
     <link rel="stylesheet" href="detail.css">
     <link rel="stylesheet" href="account.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
@@ -12,8 +12,8 @@
 </head>
 <body>
     <div class="promo-banner ">
-        <p>Sign up and get 20% off to your first order.
-            <a href="#">Sign Up Now</a>
+        <p>Зарегистрируйтесь и получите скидку 20% на первый заказ.
+            <a href="#">Зарегистрироваться</a>
         </p>
         <button type="button" class="promo-close" aria-label="Закрыть баннер"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     </div>
@@ -24,24 +24,24 @@
         <div class="logo">SHOP.CO</div>
         <ul id="ul">
             <li class="has-drop">
-                <a>Shop</a>
+                <a>Магазин</a>
                 <button type="button" class="arrow-btn">
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
             </li>
-            <li>On Sale</li>
-            <li>New Arrivals</li>
-            <li>Brands</li>
+            <li>Скидки</li>
+            <li>Новинки</li>
+            <li>Бренды</li>
         </ul>
         <ul class="drop-box">
-            <li><a href="./index.html">Home</a></li>
-            <li><a href="./category.html">Casual</a></li>
-            <li><a href="./cart.html">Cart</a></li>
+            <li><a href="./index.html">Главная</a></li>
+            <li><a href="./category.html">Каталог</a></li>
+            <li><a href="./cart.html">Корзина</a></li>
         </ul>
         <div class="header-tools">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-                <input type="search" name="q" autocomplete="off" inputmode="search" enterkeyhint="search" aria-label="Поиск товаров" placeholder="Поиск товаров, например T-shirt…">
+                <input type="search" name="q" autocomplete="off" inputmode="search" enterkeyhint="search" aria-label="Поиск товаров" placeholder="Поиск товаров, например футболка…">
             </div>
             <div class="header-icon">
                 <button type="button" class="search-toggle" aria-label="Открыть поиск" aria-expanded="false"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
@@ -53,46 +53,45 @@
     <div class="main-content container">
         <div class="product-images">
             <div class="small-images">
-                <img src="./images/image 2.png" alt="img">
-                <img src="./images/image 5.png" alt="img">
-                <img src="./images/image 6.png" alt="img">
+                <img src="./images/image 2.png" alt="Миниатюра товара">
+                <img src="./images/image 5.png" alt="Миниатюра товара">
+                <img src="./images/image 6.png" alt="Миниатюра товара">
             </div>
             <div class="big-image">
-                <img class="main-img" src="./images/image 1.png" alt="main-img">
+                <img class="main-img" src="./images/image 1.png" alt="Фото товара">
             </div>
         </div>
         <div class="product-info">
-            <h1 class="title">One Life Graphic T-Shirt</h1>
+            <h1 class="title">Футболка с принтом One Life</h1>
             <div class="rating-box">
-                <div class="stars">★★★★★</div>
+                <div class="stars" aria-label="Рейтинг товара"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i></div>
                 <span class="rating-num">4.5/5</span>
+                <span class="rating-count" id="rating-count"></span>
             </div>
             <div class="price-box">
-                <span class="price-now">$260</span>
-                <span class="price-old">$300</span>
+                <span class="price-now">23&nbsp;400&nbsp;₽</span>
+                <span class="price-old">27&nbsp;000&nbsp;₽</span>
                 <span class="sale-badge">-40%</span>
             </div>
             <p class="description">
-                This graphic t-shirt which is perfect for any occasion. Crafted from a soft and breathable fabric, it
-                offers
-                superior comfort and style.
+                Эта футболка с принтом подойдёт для любого случая. Изготовлена из мягкой дышащей ткани, обеспечивает комфорт и стиль.
             </p>
-            <div class="section-title">Select Colors <span class="color-name" id="color-name"></span></div>
+            <div class="section-title">Выберите цвет <span class="color-name" id="color-name"></span></div>
             <div class="colors-wrap"></div>
-            <div class="section-title">Choose Size</div>
+            <div class="section-title">Выберите размер</div>
             <div class="sizes-wrap">
-                <button class="size-btn">Small</button>
-                <button class="size-btn">Medium</button>
-                <button class="size-btn active">Large</button>
-                <button class="size-btn">X-Large</button>
+                <button type="button" class="size-btn" aria-pressed="false">S</button>
+                <button type="button" class="size-btn" aria-pressed="false">M</button>
+                <button type="button" class="size-btn active" aria-pressed="true">L</button>
+                <button type="button" class="size-btn" aria-pressed="false">XL</button>
             </div>
             <div class="buttons-wrap">
                 <div class="count-box">
-                    <button class="minus-btn disabled">−</button>
+                    <button type="button" class="minus-btn disabled" aria-label="Уменьшить количество">−</button>
                     <span class="count-num">1</span>
-                    <button class="plus-btn">+</button>
+                    <button type="button" class="plus-btn" aria-label="Увеличить количество">+</button>
                 </div>
-                <button class="cart-btn">Add to Cart</button>
+                <button type="button" class="cart-btn">Добавить в корзину</button>
             </div>
         </div>
     </div>
@@ -123,99 +122,23 @@
         </div>
     </form>
     <div class="reviews container" id="reviews-list"></div>
-    <h2 class="card-h2">You might also like</h2>
-    <div class="product-row container">
-        <div class="product-card ">
-            <div class="card-visual">
-                <img src="./images/image 19.png">
-            </div>
-            <div class="card-info">
-                <h3>Polo with Contrast Trims</h3>
-                <div class="product-rating">
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <span>4.0/5</span>
-                </div>
-                <div class="card-price">
-                    <span class="current-price">$212</span>
-                    <span class="old-price">$242</span>
-                    <span class="badge">-20%</span>
-                </div>
-            </div>
-        </div>
-        <div class="product-card ">
-            <div class="card-visual">
-                <img src="./images/image 20.png">
-            </div>
-            <div class="card-info">
-                <h3>Gradient Graphic T-shirt</h3>
-                <div class="product-rating">
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <span>4.0/5</span>
-                </div>
-                <div class="card-price">
-                    <span class="current-price">$145</span>
-                </div>
-            </div>
-        </div>
-        <div class="product-card ">
-            <div class="card-visual">
-                <img src="./images/image 21.png">
-            </div>
-            <div class="card-info">
-                <h3>Polo with Tipping Details</h3>
-                <div class="product-rating">
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <span>4.0/5</span>
-                </div>
-                <div class="card-price">
-                    <span class="current-price">$180</span>
-                </div>
-            </div>
-        </div>
-        <div class="product-card ">
-            <div class="card-visual">
-                <img src="./images/image 22.png">
-            </div>
-            <div class="card-info">
-                <h3>Black Striped T-shirt</h3>
-                <div class="product-rating">
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <i class="fa-solid fa-star" style="color: #ffad33"></i>
-                    <span>5.0/5</span>
-                </div>
-                <div class="card-price">
-                    <span class="current-price">$120</span>
-                    <span class="old-price">$150</span>
-                    <span class="badge">-30%</span>
-                </div>
-            </div>
-        </div>
+    <div class="related-head container">
+        <h2 class="card-h2">Вам может понравиться</h2>
     </div>
+    <div class="product-row container" id="related-row"></div>
     <footer class="footer">
         <div class="banner">
-            <h2 class="banner-h2">STAY UPTO DATE ABOUT OUR LATEST OFFERS</h2>
+            <h2 class="banner-h2">Будьте в курсе новинок и акций</h2>
             <form class="banner-form">
                 <i class="fa-regular fa-envelope"></i>
-                <input type="email" placeholder="Enter your email address">
-                <button type="submit">Subscribe to Newsletter</button>
+                <input type="email" placeholder="Ваш email, например name@mail.ru…">
+                <button type="submit">Подписаться на рассылку</button>
             </form>
         </div>
         <div class="footer-content">
             <div class="footer-column company-info">
                 <h3>SHOP.CO</h3>
-                <p>We have clothes that suits your style and which you’re proud to wear. From women to men.</p>
+                <p>Мы создаём одежду, которая подчёркивает ваш стиль и которой вы будете гордиться. Для женщин и мужчин.</p>
                 <div class="social-icons">
                     <i class="fa-brands fa-square-twitter"></i>
                     <i class="fa-brands fa-facebook"></i>
@@ -224,51 +147,45 @@
                 </div>
             </div>
             <div class="footer-column">
-                <h3>Company</h3>
+                <h3>Компания</h3>
                 <ul>
-                    <li>About</li>
-                    <li>Features</li>
-                    <li>Works</li>
-                    <li>Career</li>
+                    <li>О нас</li>
+                    <li>Возможности</li>
+                    <li>Как это работает</li>
+                    <li>Карьера</li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h3>Help</h3>
+                <h3>Помощь</h3>
                 <ul>
-                    <li>Customer Support</li>
-                    <li>Delivery Details</li>
-                    <li>Terms & Conditions</li>
-                    <li>Privacy Policy</li>
+                    <li>Поддержка клиентов</li>
+                    <li>Условия доставки</li>
+                    <li>Условия использования</li>
+                    <li>Политика конфиденциальности</li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h3>FAQ</h3>
+                <h3>Вопросы</h3>
                 <ul>
-                    <li>Account</li>
-                    <li>Manage Deliveries</li>
-                    <li>Orders</li>
-                    <li>Payments</li>
+                    <li>Аккаунт</li>
+                    <li>Управление доставкой</li>
+                    <li>Заказы</li>
+                    <li>Оплата</li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h3>Resources</h3>
+                <h3>Ресурсы</h3>
                 <ul>
-                    <li>Free eBooks</li>
-                    <li>Development Tutorial</li>
-                    <li>How to - Blog</li>
-                    <li>Youtube Playlist</li>
+                    <li>Бесплатные книги</li>
+                    <li>Руководство по разработке</li>
+                    <li>Блог</li>
+                    <li>Плейлист на YouTube</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Shop.co © 2000-2023, All Rights Reserved</p>
-            <div class="icons">
-                <i class="fa-brands fa-cc-visa"></i>
-                <i class="fa-brands fa-cc-mastercard"></i>
-                <i class="fa-brands fa-cc-paypal"></i>
-                <i class="fa-brands fa-cc-apple-pay"></i>
-                <i class="fa-brands fa-google-pay"></i>
-            </div>
+            <p>Shop.co © 2000–2026. Все права защищены</p>
+            <p class="footer-pay">Оплата: наличными, картой при получении или переводом по СБП</p>
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.20.0/dist/axios.min.js"></script>

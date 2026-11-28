@@ -238,12 +238,14 @@ function bindFavButtons(root, onChange) {
 }
 
 function starsHtml(rating) {
+    const value = Number(rating) || 0
     let stars = " "
     for (let i = 1; i <= 5; i++) {
-        if (i <= rating) {
+        const left = value - (i - 1)
+        if (left >= 0.75) {
             stars += `<i class="fa-solid fa-star" style="color: #ffad33"></i>`
         }
-        else if (i - 0.5 === rating) {
+        else if (left >= 0.25) {
             stars += `<i class="fa-regular fa-star-half-stroke" style="color: #ffad33"></i>`
         }
         else {
@@ -254,9 +256,14 @@ function starsHtml(rating) {
 }
 
 function productCardInner(element) {
+    let reviewsText = ""
+    if (Number(element.reviewsCount) > 0) {
+        reviewsText = ` (${element.reviewsCount})`
+    }
+
     let oldPrice = " "
     if (element.oldPrice !== null && element.oldPrice !== undefined) {
-        oldPrice = `<span class="old-price">$${element.oldPrice}</span>`
+        oldPrice = `<span class="old-price">${formatPrice(element.oldPrice)}</span>`
     }
     let discount = " "
     if (element.discount !== null && element.discount !== undefined) {
@@ -272,10 +279,10 @@ function productCardInner(element) {
                     <h3>${element.title}</h3>
                     <div class="product-rating">
                         ${starsHtml(element.rating)}
-                        <span>${element.rating}/5</span>
+                        <span>${element.rating}/5${reviewsText}</span>
                     </div>
                     <div class="card-price">
-                        <span class="current-price">$${element.currentPrice}</span>
+                        <span class="current-price">${formatPrice(element.currentPrice)}</span>
                         ${oldPrice}
                         ${discount}
                     </div>
@@ -358,9 +365,33 @@ async function loadSuggestProducts() {
     return suggestProducts
 }
 
-const searchMoney = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 })
+const popularQueries = [
+    { label: "Футболки", query: "футболк" },
+    { label: "Джинсы", query: "джинс" },
+    { label: "Худи", query: "худи" },
+    { label: "Шорты", query: "шорт" }
+]
 
-const popularQueries = ["T-shirt", "Jeans", "Hoodie", "Shorts"]
+const searchSynonyms = {
+    "футболк": ["t-shirt", "tee"],
+    "джинс": ["jeans"],
+    "худи": ["hoodie"],
+    "шорт": ["shorts"],
+    "рубашк": ["shirt"],
+    "поло": ["polo"],
+    "куртк": ["jacket"],
+    "свитшот": ["sweatshirt"]
+}
+
+function searchVariants(word) {
+    const variants = [word]
+    for (const key in searchSynonyms) {
+        if (word.startsWith(key) || (word.length >= 3 && key.startsWith(word))) {
+            searchSynonyms[key].forEach(item => variants.push(item))
+        }
+    }
+    return variants
+}
 
 function searchEscape(text) {
     let value = ""
@@ -382,7 +413,13 @@ function searchScore(product, words) {
     const title = String(product.title).toLowerCase()
     let score = 0
     for (let i = 0; i < words.length; i++) {
-        const at = title.indexOf(words[i])
+        let at = -1
+        searchVariants(words[i]).forEach(variant => {
+            const found = title.indexOf(variant)
+            if (found !== -1 && (at === -1 || found < at)) {
+                at = found
+            }
+        });
         if (at === -1) {
             return -1
         }
@@ -421,7 +458,11 @@ function searchHighlight(title, words) {
     if (words.length === 0) {
         return searchEscape(full)
     }
-    const pattern = words.map(word => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")
+    let allWords = []
+    words.forEach(word => {
+        allWords = allWords.concat(searchVariants(word))
+    });
+    const pattern = allWords.map(word => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")
     const parts = full.split(new RegExp(`(${pattern})`, "gi"))
     let html = ""
     parts.forEach((part, index) => {
@@ -467,7 +508,7 @@ function setupSearch() {
     input.setAttribute("inputmode", "search")
     input.setAttribute("enterkeyhint", "search")
     input.setAttribute("aria-label", "Поиск товаров")
-    input.setAttribute("placeholder", "Поиск товаров, например T-shirt…")
+    input.setAttribute("placeholder", "Поиск товаров, например футболка…")
     input.setAttribute("role", "combobox")
     input.setAttribute("aria-autocomplete", "list")
     input.setAttribute("aria-expanded", "false")
@@ -542,8 +583,8 @@ function setupSearch() {
 
     function showPopular() {
         let html = `<div class="suggest-head">Популярное</div><div class="suggest-tags">`
-        popularQueries.forEach((word, index) => {
-            html += `<a class="suggest-tag" role="option" aria-selected="false" tabindex="-1" id="search-opt-${index}" href="./category.html?search=${encodeURIComponent(word)}">${searchEscape(word)}</a>`
+        popularQueries.forEach((item, index) => {
+            html += `<a class="suggest-tag" role="option" aria-selected="false" tabindex="-1" id="search-opt-${index}" href="./category.html?search=${encodeURIComponent(item.query)}">${searchEscape(item.label)}</a>`
         });
         html += `</div>`
         list.innerHTML = html
@@ -602,13 +643,13 @@ function setupSearch() {
         shown.forEach((product, index) => {
             let oldPrice = ""
             if (product.oldPrice !== null && product.oldPrice !== undefined) {
-                oldPrice = `<s>${searchMoney.format(Number(product.oldPrice))}</s>`
+                oldPrice = `<s>${formatPrice(product.oldPrice)}</s>`
             }
             html += `<a class="suggest-item" role="option" aria-selected="false" tabindex="-1" id="search-opt-${index}" href="./detail.html?id=${product.id}">
                         <img src="${searchEscape(product.imageUrl)}" alt="" width="44" height="44" loading="lazy">
                         <span class="suggest-text">
                             <span class="suggest-title">${searchHighlight(product.title, words)}</span>
-                            <span class="suggest-price"><b>${searchMoney.format(Number(product.currentPrice))}</b>${oldPrice}</span>
+                            <span class="suggest-price"><b>${formatPrice(product.currentPrice)}</b>${oldPrice}</span>
                         </span>
                     </a>`
         });

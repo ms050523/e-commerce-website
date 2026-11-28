@@ -42,15 +42,49 @@ async function fetchOneProduct() {
     try {
         const response = await axios.get(`${API}/${productId}`)
         renderDetailProduct(response.data)
+        renderRelated(response.data)
     } catch (error) {
         console.error("Ошибка при загрузке товара:", error);
+    }
+}
+
+async function renderRelated(product) {
+    const relatedRow = document.getElementById("related-row")
+    const relatedHead = document.querySelector(".related-head")
+
+    try {
+        const response = await axios.get(API)
+        const others = response.data.filter(e => String(e.id) !== String(product.id))
+
+        const sameCategory = others.filter(e => e.category === product.category)
+        const rest = others.filter(e => e.category !== product.category)
+        const list = sameCategory.concat(rest).slice(0, 4)
+
+        if (list.length === 0) {
+            relatedRow.hidden = true
+            relatedHead.hidden = true
+            return
+        }
+
+        relatedRow.innerHTML = ""
+        list.forEach(item => {
+            const card = document.createElement("div")
+            card.className = "product-card"
+            card.innerHTML = productCardInner(item)
+            bindFavButtons(card)
+            relatedRow.appendChild(card)
+        });
+    } catch (error) {
+        console.log("Ошибка: ", error);
+        relatedRow.hidden = true
+        relatedHead.hidden = true
     }
 }
 
 // товар уже в корзине - меняем кнопку
 function setInCart() {
     inCart = true
-    cartBtn.textContent = "Go to Cart"
+    cartBtn.textContent = "Перейти в корзину"
 }
 
 // проверяем при открытии страницы, есть ли товар в корзине
@@ -85,7 +119,7 @@ async function ADD_TO_CART() {
     const size = activeSize.textContent
 
     // выбранный цвет
-    let color = "Olive"
+    let color = "Оливковый"
     if (currentColors[currentColorIndex]) {
         color = currentColors[currentColorIndex].name
     }
@@ -96,7 +130,7 @@ async function ADD_TO_CART() {
     }
 
     cartBtn.disabled = true
-    cartBtn.textContent = "Adding..."
+    cartBtn.textContent = "Добавляем…"
 
     const state = await getAccountState(session.user.id)
     if (state.banned) {
@@ -141,7 +175,7 @@ async function ADD_TO_CART() {
     }
     cartBtn.disabled = false
     if (inCart === false) {
-        cartBtn.textContent = "Add to Cart"
+        cartBtn.textContent = "Добавить в корзину"
     }
 }
 
@@ -169,9 +203,9 @@ function buildColors(product) {
 
     const extra = product.colorImages || []
     return [
-        { name: "Olive", hex: "#4F4E44", image: product.imageUrl },
-        { name: "Green", hex: "#314F4A", image: extra[0] || product.imageUrl },
-        { name: "Navy", hex: "#31344F", image: extra[1] || product.imageUrl }
+        { name: "Оливковый", hex: "#4F4E44", image: product.imageUrl },
+        { name: "Зелёный", hex: "#314F4A", image: extra[0] || product.imageUrl },
+        { name: "Тёмно-синий", hex: "#31344F", image: extra[1] || product.imageUrl }
     ]
 }
 
@@ -261,11 +295,11 @@ function renderDetailProduct(product) {
     currentColorIndex = 0
     renderColors()
     mainImg.src = currentImages[0]
-    priceNow.innerHTML = `$${product.currentPrice}`
+    priceNow.innerHTML = formatPrice(product.currentPrice)
 
 
     if (product.oldPrice !== null) {
-        priceOld.innerHTML = `$${product.oldPrice}`
+        priceOld.innerHTML = formatPrice(product.oldPrice)
     }
     else {
         priceOld.innerHTML = " "
@@ -283,19 +317,7 @@ function renderDetailProduct(product) {
 
     description.innerHTML = product.description
 
-    let star = ""
-    for (let i = 1; i <= 5; i++) {
-        if (i <= product.rating) {
-            star += `<i class="fa-solid fa-star" style="color: #ffad33"></i>`
-        }
-        else if (i - 0.5 === product.rating) {
-            star += `<i class="fa-regular fa-star-half-stroke" style="color: #ffad33"></i>`
-        }
-        else {
-            star += `<i class="fa-regular fa-star" style="color: #ffad33"></i>`
-        }
-    }
-    stars.innerHTML = star
+    stars.innerHTML = starsHtml(product.rating)
     rating.innerHTML = `${product.rating}/5`
 }
 
@@ -311,8 +333,12 @@ cartBtn.addEventListener('click', () => {
 
 sizeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-        sizeButtons.forEach(a => a.classList.remove('active'))
+        sizeButtons.forEach(a => {
+            a.classList.remove('active')
+            a.setAttribute("aria-pressed", "false")
+        })
         btn.classList.add('active')
+        btn.setAttribute("aria-pressed", "true")
     })
 });
 
